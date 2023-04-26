@@ -7,26 +7,35 @@ namespace Shooter3D
         [SerializeField] private CharacterController characterController;
 
         [Header("Movement")]
-        [SerializeField] private float RifleRunSpeed;
-        [SerializeField] private float RifleSprintSpeed;
-        [SerializeField] private float AimingWalkSpeed;
-        [SerializeField] private float AimingRunSpeed;
-        [SerializeField] private float CrouchSpeed;
-        [SerializeField] private float JumpSpeed;
+        [SerializeField] private float rifleRunSpeed;
+        [SerializeField] private float rifleSprintSpeed;
+        [SerializeField] private float aimingWalkSpeed;
+        [SerializeField] private float aimingRunSpeed;
+        [SerializeField] private float accelerationRate;
+        [SerializeField] private float crouchSpeed;
+        [SerializeField] private float jumpSpeed;
 
         [Header("State")]
-        [SerializeField] private float crouhHeight;
-
+        [SerializeField] private float crouchHeight;
         private bool isAiming;
         private bool isJump;
         private bool isCrouch;
         private bool isSprint;
 
+        // Public
+        [HideInInspector] public Vector3 TargetDirectionControl;
+        public float JumpSpeed => jumpSpeed;
+        public float CrouchHeight => crouchHeight;
+        public bool IsCrouch => isCrouch;
+        public bool IsSprint => isSprint;
+        public bool IsAiming => isAiming;
+
+        // Private
         private float BaseCharacterHeight;
         private float BaseCharacterHeightOffset;
 
-        public Vector3 DirectionControl;
-        private Vector3 MovementDirection;
+        private Vector3 directionControl;
+        private Vector3 movementDirection;
 
 
         private void Start()
@@ -38,29 +47,6 @@ namespace Shooter3D
 
         private void Update()
         {
-            DirectionControl = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-            if (Input.GetButtonDown("Jump"))
-                Jump();
-
-            // Вызов метода Crouch/UnCrouch в зависимости от ввода
-            if (Input.GetButtonDown("Crouch"))
-            {
-                isCrouch = !isCrouch;
-            }
-
-            // Вызов метода Sprint/UnSprint в зависимости от ввода
-            if (Input.GetButtonDown("Sprint"))
-            {
-                isSprint = !isSprint;
-            }
-
-            // Вызов метода Aiming/UnAiming в зависимости от ввода
-            if (Input.GetButtonDown("Aiming"))
-            {
-                isAiming = !isAiming;
-            }
-
             Move();
         }
 
@@ -76,7 +62,7 @@ namespace Shooter3D
         {
             if (characterController.isGrounded == false) return;
             isCrouch = true;
-            characterController.height = crouhHeight;
+            characterController.height = crouchHeight;
             characterController.center = new Vector3(0, characterController.center.y / 2, 0);
         }
 
@@ -93,10 +79,8 @@ namespace Shooter3D
         public void Sprint()
         {
             if (characterController.isGrounded == false) return;
-            if (isCrouch)
-            {
-                UnCrouch();
-            }
+            if (isCrouch) return;
+
             isSprint = true;
         }
 
@@ -118,30 +102,41 @@ namespace Shooter3D
         private float GetCurrentSpeedByState()
         {
             // Получение скоростей в зависимости от состояния
-            if (isCrouch) return CrouchSpeed;
-            if (isAiming == false && isSprint) return RifleSprintSpeed;
-            if (isAiming && isSprint == false) return AimingWalkSpeed;
-            if (isAiming && isSprint) return AimingRunSpeed;
+            if (isCrouch) return crouchSpeed;
 
-            return RifleRunSpeed;
+            if (isAiming)
+            {
+                if (isSprint) return aimingRunSpeed;
+                else return aimingWalkSpeed;
+            }
+
+            if (isAiming == false)
+            {
+                if (isSprint) return rifleSprintSpeed;
+                else return rifleRunSpeed;
+            }
+
+            return rifleRunSpeed;
         }
 
         private void Move()
         {
+            directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * accelerationRate);
+
             if (characterController.isGrounded)
             {
-                MovementDirection = DirectionControl * GetCurrentSpeedByState();
+                movementDirection = directionControl * GetCurrentSpeedByState();
 
                 if (isJump == true)
                 {
-                    MovementDirection.y = JumpSpeed;
+                    movementDirection.y = JumpSpeed;
                     isJump = false;
                 }
             }
 
-            MovementDirection += Physics.gravity * Time.deltaTime;
+            movementDirection += Physics.gravity * Time.deltaTime;
 
-            characterController.Move(MovementDirection * Time.deltaTime);
+            characterController.Move(movementDirection * Time.deltaTime);
         }
     }
 }
