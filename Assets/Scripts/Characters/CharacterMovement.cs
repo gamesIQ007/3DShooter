@@ -31,6 +31,8 @@ namespace Shooter3D
         public bool IsSprint => isSprint;
         public bool IsAiming => isAiming;
         public float DistanceToGround => distanceToGround;
+        public bool IsGrounded => distanceToGround < 0.001f; // в обучении говорится про 0.01f, но с ним работает хуже
+
 
         // Private
         private float BaseCharacterHeight;
@@ -55,8 +57,7 @@ namespace Shooter3D
 
         public void Jump()
         {
-            //if (characterController.isGrounded == false) return;
-            if (distanceToGround > 0.1f) return;
+            if (IsGrounded == false) return;
             if (isCrouch) return;
 
             isJump = true;
@@ -64,7 +65,7 @@ namespace Shooter3D
 
         public void Crouch()
         {
-            if (characterController.isGrounded == false) return;
+            if (IsGrounded == false) return;
             if (isSprint) return;
             isCrouch = true;
             characterController.height = crouchHeight;
@@ -79,7 +80,7 @@ namespace Shooter3D
 
         public void Sprint()
         {
-            if (characterController.isGrounded == false) return;
+            if (IsGrounded == false) return;
             if (isCrouch) return;
 
             isSprint = true;
@@ -122,7 +123,7 @@ namespace Shooter3D
         {
             directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * accelerationRate);
 
-            if (characterController.isGrounded)
+            if (IsGrounded)
             {
                 movementDirection = directionControl * GetCurrentSpeedByState();
 
@@ -131,6 +132,8 @@ namespace Shooter3D
                     movementDirection.y = JumpSpeed;
                     isJump = false;
                 }
+
+                movementDirection = transform.TransformDirection(movementDirection);
             }
 
             movementDirection += Physics.gravity * Time.deltaTime;

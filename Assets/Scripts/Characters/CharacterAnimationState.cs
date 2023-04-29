@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shooter3D
 {
@@ -11,17 +11,17 @@ namespace Shooter3D
 
         private void Update()
         {
-            Vector3 movementSpeed = targetCharacterController.velocity;
+            Vector3 movementSpeed = transform.InverseTransformDirection(targetCharacterController.velocity);
 
             targetAnimator.SetFloat("Normalize Movement X", movementSpeed.x / targetCharacterMovement.GetCurrentSpeedByState());
             targetAnimator.SetFloat("Normalize Movement Z", movementSpeed.z / targetCharacterMovement.GetCurrentSpeedByState());
 
-            targetAnimator.SetBool("Is Ground", targetCharacterController.isGrounded);
+            targetAnimator.SetBool("Is Ground", targetCharacterMovement.IsGrounded);
             targetAnimator.SetBool("Is Croaching", targetCharacterMovement.IsCrouch);
             targetAnimator.SetBool("Is Aiming", targetCharacterMovement.IsAiming);
             targetAnimator.SetBool("Is Sprint", targetCharacterMovement.IsSprint);
 
-            if (targetCharacterController.isGrounded == false)
+            if (targetCharacterMovement.IsGrounded == false)
             {
                 targetAnimator.SetFloat("Jump", movementSpeed.y);
             }
