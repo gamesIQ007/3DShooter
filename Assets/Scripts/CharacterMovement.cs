@@ -21,6 +21,7 @@ namespace Shooter3D
         private bool isJump;
         private bool isCrouch;
         private bool isSprint;
+        private float distanceToGround;
 
         // Public
         [HideInInspector] public Vector3 TargetDirectionControl;
@@ -29,6 +30,7 @@ namespace Shooter3D
         public bool IsCrouch => isCrouch;
         public bool IsSprint => isSprint;
         public bool IsAiming => isAiming;
+        public float DistanceToGround => distanceToGround;
 
         // Private
         private float BaseCharacterHeight;
@@ -40,7 +42,6 @@ namespace Shooter3D
 
         private void Start()
         {
-            // Запоминаем базовые значения капсулы
             BaseCharacterHeight = characterController.height;
             BaseCharacterHeightOffset = characterController.center.y;
         }
@@ -48,12 +49,15 @@ namespace Shooter3D
         private void Update()
         {
             Move();
+            UpdateDistanceToGround();
         }
 
 
         public void Jump()
         {
-            if (characterController.isGrounded == false) return;
+            //if (characterController.isGrounded == false) return;
+            if (distanceToGround > 0.1f) return;
+            if (isCrouch) return;
 
             isJump = true;
         }
@@ -61,20 +65,17 @@ namespace Shooter3D
         public void Crouch()
         {
             if (characterController.isGrounded == false) return;
+            if (isSprint) return;
             isCrouch = true;
             characterController.height = crouchHeight;
             characterController.center = new Vector3(0, characterController.center.y / 2, 0);
         }
-
         public void UnCrouch()
         {
             isCrouch = false;
-            // установить капсулу в дефолтное состояние
             characterController.height = BaseCharacterHeight;
             characterController.center = new Vector3(0, BaseCharacterHeightOffset, 0);
         }
-
-        // Методы для всех состояний
 
         public void Sprint()
         {
@@ -83,7 +84,6 @@ namespace Shooter3D
 
             isSprint = true;
         }
-
         public void UnSprint()
         {
             isSprint = false;
@@ -93,15 +93,13 @@ namespace Shooter3D
         {
             isAiming = true;
         }
-
         public void UnAiming()
         {
             isAiming = false;
         }
 
-        private float GetCurrentSpeedByState()
+        public float GetCurrentSpeedByState()
         {
-            // Получение скоростей в зависимости от состояния
             if (isCrouch) return crouchSpeed;
 
             if (isAiming)
@@ -118,6 +116,7 @@ namespace Shooter3D
 
             return rifleRunSpeed;
         }
+
 
         private void Move()
         {
@@ -137,6 +136,15 @@ namespace Shooter3D
             movementDirection += Physics.gravity * Time.deltaTime;
 
             characterController.Move(movementDirection * Time.deltaTime);
+        }
+
+        private void UpdateDistanceToGround()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1000))
+            {
+                distanceToGround = hit.distance;
+            }
         }
     }
 }

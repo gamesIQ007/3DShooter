@@ -4,7 +4,7 @@ namespace Shooter3D
 {
     public class CharacterMovementController : MonoBehaviour
     {
-        [SerializeField] CharacterMovement targetCharacterController;
+        [SerializeField] private CharacterMovement targetCharacterMovement;
 
 
         private void Start()
@@ -15,38 +15,38 @@ namespace Shooter3D
 
         private void Update()
         {
-            targetCharacterController.TargetDirectionControl = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            targetCharacterMovement.TargetDirectionControl = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             if (Input.GetButtonDown("Jump"))
             {
-                targetCharacterController.Jump();
+                targetCharacterMovement.Jump();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                targetCharacterController.Crouch();
+                targetCharacterMovement.Crouch();
             }
             if (Input.GetKeyUp(KeyCode.LeftControl))
             {
-                targetCharacterController.UnCrouch();
+                targetCharacterMovement.UnCrouch();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                targetCharacterController.Sprint();
+                targetCharacterMovement.Sprint();
             }
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
-                targetCharacterController.UnSprint();
+                targetCharacterMovement.UnSprint();
             }
 
             if (Input.GetMouseButtonDown(1))
             {
-                targetCharacterController.Aiming();
+                targetCharacterMovement.Aiming();
             }
             if (Input.GetMouseButtonUp(1))
             {
-                targetCharacterController.UnAiming();
+                targetCharacterMovement.UnAiming();
             }
         }
     }
