@@ -720,7 +720,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1261364840}
   offset: {x: 0, y: 1.5, z: 0}
+  changeOffsetRate: 15
+  rotateTargetLerpRate: 800
   distance: 4
+  minDistance: 0.5
+  distanceLerpRate: 20
+  distanceOffsetFromCollisionHit: 1
   sensitive: 2
   maxLimitY: 80
   minLimitY: -45

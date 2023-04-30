@@ -7,8 +7,14 @@ namespace Shooter3D
         [SerializeField] private Transform target;
 
         [SerializeField] private Vector3 offset;
+        [SerializeField] private float changeOffsetRate;
+        [SerializeField] private float rotateTargetLerpRate;
 
+        [Header("Distance")]
         [SerializeField] private float distance;
+        [SerializeField] private float minDistance;
+        [SerializeField] private float distanceLerpRate;
+        [SerializeField] private float distanceOffsetFromCollisionHit;
 
         [SerializeField] private float sensitive;
 
@@ -28,6 +34,8 @@ namespace Shooter3D
         private float deltaRotationX;
         private float deltaRotationY;
 
+        private float currentDistance;
+
         private Vector3 targetOffset;
         private Vector3 defaultOffset;
 
@@ -40,21 +48,50 @@ namespace Shooter3D
 
         private void Update()
         {
+            // Расчёт вращения и позиции
             deltaRotationX += RotationControl.x * sensitive;
             deltaRotationY += RotationControl.y * sensitive;
             deltaRotationY = ClampAngle(deltaRotationY, minLimitY, maxLimitY);
 
+            offset = Vector3.MoveTowards(offset, targetOffset, Time.deltaTime * changeOffsetRate);
+
             Quaternion finalRotation = Quaternion.Euler(deltaRotationY, deltaRotationX, 0);
             Vector3 finalPosition = target.position - (finalRotation * Vector3.forward * distance);
-
             finalPosition = AddLocalOffset(finalPosition);
-            
-            transform.position = finalPosition;
-            transform.rotation = finalRotation;
 
+            // Расчёт дистанции
+            float targetDistance = distance;
+
+            RaycastHit hit;
+            if (Physics.Linecast(target.position + new Vector3(0, offset.y, 0), finalPosition, out hit))
+            {
+                float distanceToHit = Vector3.Distance(target.position + new Vector3(0, offset.y, 0), hit.point);
+
+                if (hit.transform != target)
+                {
+                    if (distanceToHit < distance)
+                    {
+                        targetDistance = distanceToHit - distanceOffsetFromCollisionHit;
+                    }
+                }
+            }
+
+            currentDistance = Mathf.MoveTowards(currentDistance, targetDistance, Time.deltaTime * distanceLerpRate);
+            currentDistance = Mathf.Clamp(currentDistance, minDistance, distance);
+
+            // Корректировка позиции камеры
+            finalPosition = target.position - (finalRotation * Vector3.forward * currentDistance);
+
+            //Применение трансформы
+            transform.rotation = finalRotation;
+            transform.position = finalPosition;
+            transform.position = AddLocalOffset(transform.position);
+
+            // Вращаем цель
             if (IsRotateTarget)
             {
-                target.rotation = Quaternion.Euler(transform.rotation.x, transform.eulerAngles.y, transform.eulerAngles.z);
+                Quaternion targetRotation = Quaternion.Euler(transform.rotation.x, transform.eulerAngles.y, transform.eulerAngles.z);
+                target.rotation = Quaternion.RotateTowards(target.rotation, targetRotation, Time.deltaTime * rotateTargetLerpRate);
             }
         }
 
@@ -92,12 +129,10 @@ namespace Shooter3D
         public void SetTargetOffset(Vector3 offset)
         {
             targetOffset = offset;
-            this.offset = offset;
         }
         public void SetDefaultOffset()
         {
             targetOffset = defaultOffset;
-            offset = defaultOffset;
         }
     }
 }
