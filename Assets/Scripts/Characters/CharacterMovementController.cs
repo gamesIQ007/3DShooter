@@ -20,7 +20,7 @@ namespace Shooter3D
         {
             targetCharacterMovement.TargetDirectionControl = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-            targetCamera.RotationControl = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            targetCamera.RotationControl = new Vector2(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
 
             if (targetCharacterMovement.TargetDirectionControl != Vector3.zero || targetCharacterMovement.IsAiming)
             {
