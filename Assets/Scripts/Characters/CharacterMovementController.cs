@@ -6,6 +6,7 @@ namespace Shooter3D
     {
         [SerializeField] private CharacterMovement targetCharacterMovement;
         [SerializeField] private ThirdPersonCamera targetCamera;
+        [SerializeField] private PlayerShooter targetShooter;
 
         [SerializeField] private Vector3 aimingOffset;
 
@@ -63,6 +64,11 @@ namespace Shooter3D
             {
                 targetCharacterMovement.UnAiming();
                 targetCamera.SetDefaultOffset();
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                targetShooter.Shoot();
             }
         }
     }
