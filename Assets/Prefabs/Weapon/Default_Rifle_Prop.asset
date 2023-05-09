@@ -20,4 +20,4 @@ MonoBehaviour:
   energyRegenPerSecond: 10
   spreadShotRange: 0.1
   spreadShotDistanceFactor: 0.1
-  launchSFX: {fileID: 8300000, guid: 752feb0fb67c41245979cbf688608efa, type: 3}
+  launchSFX: {fileID: 8300000, guid: 52eee3472cd0d7744a172523797ea3ea, type: 3}

@@ -10,7 +10,7 @@ namespace Shooter3D
 
         [SerializeField] private int damage;
 
-        [SerializeField] private ImpactEffect impactEffectPrefab;
+        [SerializeField] private ImpactEffect[] impactEffectPrefabs;
 
         private float timer;
 
@@ -34,13 +34,14 @@ namespace Shooter3D
             if (Physics.Raycast(transform.position, transform.forward, out hit, stepLength))
             {
                 Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
+                int targetMaterial = ((int)hit.collider.transform.root.GetComponent<ObjectMaterial>().CurrentObjectMaterial);
 
                 if (dest != null && dest != parent)
                 {
                     dest.ApplyDamage(damage);
                 }
 
-                OnProjectileLifeEnd(hit.collider, hit.point, hit.normal);
+                OnProjectileLifeEnd(hit.collider, hit.point, hit.normal, targetMaterial);
             }
 
             transform.position += new Vector3(step.x, step.y, step.z);
@@ -51,11 +52,11 @@ namespace Shooter3D
             this.parent = parent;
         }
 
-        private void OnProjectileLifeEnd(Collider col, Vector3 pos, Vector3 normal)
+        private void OnProjectileLifeEnd(Collider col, Vector3 pos, Vector3 normal, int targetMaterial)
         {
-            if (impactEffectPrefab != null)
+            if (impactEffectPrefabs[targetMaterial] != null)
             {
-                ImpactEffect impact = Instantiate(impactEffectPrefab, pos, Quaternion.LookRotation(normal));
+                ImpactEffect impact = Instantiate(impactEffectPrefabs[targetMaterial], pos, Quaternion.LookRotation(normal));
                 impact.transform.SetParent(col.transform);
             }
 

@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1476718893052603660}
   - component: {fileID: 7277671428262649678}
+  - component: {fileID: 6181692272540701249}
+  - component: {fileID: 5017906067631826908}
   - component: {fileID: 2264953095990687717}
   m_Layer: 0
   m_Name: Drone
@@ -76,6 +78,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 6181692272540701249}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   eventOnEnableTemporaryIndestructible:
     m_PersistentCalls:
       m_Calls: []
@@ -91,6 +105,34 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 71a1aaa8829f53d4494309c884c42522, type: 2}
   hoverAmplitude: 4
   hoverSpeed: 0.5
+--- !u!114 &6181692272540701249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6218874321502257171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6362c95becfba44abb7248f25580880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  area: {fileID: 0}
+  moveSpeed: 2
+  rotateSpeed: 2
+--- !u!114 &5017906067631826908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6218874321502257171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 937ddc5f9f19932449b12c0e11008bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentObjectMaterial: 1
 --- !u!82 &2264953095990687717
 AudioSource:
   m_ObjectHideFlags: 0

@@ -49,7 +49,9 @@ MonoBehaviour:
   velocity: 350
   lifeTime: 20
   damage: 10
-  impactEffectPrefab: {fileID: 3592611017133365993, guid: 72013939f07b13f4c94cadc946ab514e, type: 3}
+  impactEffectPrefabs:
+  - {fileID: 3592611017133365993, guid: 72013939f07b13f4c94cadc946ab514e, type: 3}
+  - {fileID: 3592611017133365993, guid: c99e0c354dce4ac478b327a58e3eea51, type: 3}
 --- !u!1 &7719956011197187998
 GameObject:
   m_ObjectHideFlags: 0
