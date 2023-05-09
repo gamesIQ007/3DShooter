@@ -24,13 +24,7 @@ namespace Shooter3D
 
         [SerializeField] private UnityEvent eventOnDisableTemporaryIndestructible;
 
-        public const int TeamIdNeutral = 0;
-
-        [SerializeField] private int teamId;
-        public int TeamId => teamId;
-
-        [SerializeField] private int scoreValue;
-        public int ScoreValue => scoreValue;
+        private bool isDead = false;
 
         protected virtual void Start()
         {
@@ -51,11 +45,12 @@ namespace Shooter3D
 
         public void ApplyDamage(int damage)
         {
-            if (indestructible) return;
+            if (indestructible || isDead) return;
 
             currentHitPoints -= damage;
             if (currentHitPoints <= 0)
             {
+                isDead = true;
                 OnDeath();
             }
         }
