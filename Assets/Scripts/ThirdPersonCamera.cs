@@ -2,43 +2,96 @@
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Камера от третьего лица
+    /// </summary>
     public class ThirdPersonCamera : MonoBehaviour
     {
+        /// <summary>
+        /// Цель слежения камеры
+        /// </summary>
         [SerializeField] private Transform target;
 
+        /// <summary>
+        /// Смещение камеры
+        /// </summary>
         [SerializeField] private Vector3 offset;
+        /// <summary>
+        /// Интенсивность изменения смещения
+        /// </summary>
         [SerializeField] private float changeOffsetRate;
+        /// <summary>
+        /// Интенсивность интерполяции вращения
+        /// </summary>
         [SerializeField] private float rotateTargetLerpRate;
 
         [Header("Distance")]
+        /// <summary>
+        /// Расстояние до цели
+        /// </summary>
         [SerializeField] private float distance;
+        /// <summary>
+        /// Минимальное расстояние до цели
+        /// </summary>
         [SerializeField] private float minDistance;
+        /// <summary>
+        /// Интенсивность интерполяции дистанции
+        /// </summary>
         [SerializeField] private float distanceLerpRate;
+        /// <summary>
+        /// Смещение расстояния от коллизии объекта с камерой
+        /// </summary>
         [SerializeField] private float distanceOffsetFromCollisionHit;
 
+        /// <summary>
+        /// Чувствительность вращения
+        /// </summary>
         [SerializeField] private float sensitive;
 
         [Header("Rotation Limit")]
+        /// <summary>
+        /// Максимальный предел наклона по оси Y
+        /// </summary>
         [SerializeField] private float maxLimitY;
+        /// <summary>
+        /// Минимальный предел наклона по оси Y
+        /// </summary>
         [SerializeField] private float minLimitY;
 
         /// <summary>
         /// Вращать ли камеру
         /// </summary>
         [HideInInspector] public bool IsRotateTarget;
+        /// <summary>
+        /// Вектор внешнего управления вращением
+        /// </summary>
         [HideInInspector] public Vector2 RotationControl;
 
         /// <summary>
-        /// На сколько передвинута мышь по осям
+        /// На сколько передвинута мышь по оси X
         /// </summary>
         private float deltaRotationX;
+        /// <summary>
+        /// На сколько передвинута мышь по оси Y
+        /// </summary>
         private float deltaRotationY;
 
+        /// <summary>
+        /// Текущее расстояние до цели
+        /// </summary>
         private float currentDistance;
 
+        /// <summary>
+        /// Смещение от цели
+        /// </summary>
         private Vector3 targetOffset;
+        /// <summary>
+        /// Смещение от цели по умолчанию
+        /// </summary>
         private Vector3 defaultOffset;
 
+
+        #region Unity Events
 
         private void Start()
         {
@@ -95,14 +148,38 @@ namespace Shooter3D
             }
         }
 
+        #endregion
+
+
+        #region Public API
 
         /// <summary>
-        /// Ограничение угла поворота
+        /// Задать смещение до цели
+        /// </summary>
+        /// <param name="offset">Значение смещения</param>
+        public void SetTargetOffset(Vector3 offset)
+        {
+            targetOffset = offset;
+        }
+
+        /// <summary>
+        /// Задать смещение до цели по умолчанию
+        /// </summary>
+        public void SetDefaultOffset()
+        {
+            targetOffset = defaultOffset;
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Ограничение угла поворота камеры
         /// </summary>
         /// <param name="angle">Угол</param>
         /// <param name="min">Минимум</param>
         /// <param name="max">Максимум</param>
-        /// <returns></returns>
+        /// <returns>Итоговый угол поворота камеры</returns>
         private float ClampAngle(float angle, float min, float max)
         {
             if (angle < -360)
@@ -116,6 +193,11 @@ namespace Shooter3D
             return Mathf.Clamp(angle, min, max);
         }
 
+        /// <summary>
+        /// Добавление локального смещения
+        /// </summary>
+        /// <param name="position">Позиция смещения</param>
+        /// <returns>Итоговая позиция смещения</returns>
         private Vector3 AddLocalOffset(Vector3 position)
         {
             Vector3 result = position;
@@ -123,16 +205,6 @@ namespace Shooter3D
             result += transform.right * offset.x;
             result += transform.forward * offset.z;
             return result;
-        }
-
-
-        public void SetTargetOffset(Vector3 offset)
-        {
-            targetOffset = offset;
-        }
-        public void SetDefaultOffset()
-        {
-            targetOffset = defaultOffset;
         }
     }
 }

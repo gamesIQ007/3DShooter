@@ -1,16 +1,37 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Класс, отвечающий за стрельбу игрока
+    /// </summary>
     public class PlayerShooter : MonoBehaviour
     {
+        /// <summary>
+        /// Перемещаемый персонаж
+        /// </summary>
         [SerializeField] private CharacterMovement characterMovement;
+        /// <summary>
+        /// Оружие
+        /// </summary>
         [SerializeField] private Weapon weapon;
+        /// <summary>
+        /// Риг разброса при стрельбе
+        /// </summary>
         [SerializeField] private SpreadShootRig spreadShootRig;
+        /// <summary>
+        /// Камера
+        /// </summary>
         [SerializeField] private new Camera camera;
+        /// <summary>
+        /// Знак прицела
+        /// </summary>
         [SerializeField] private RectTransform imageSight;
 
+
+        /// <summary>
+        /// Выстрел
+        /// </summary>
         public void Shoot()
         {
             RaycastHit hit;

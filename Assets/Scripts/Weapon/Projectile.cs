@@ -1,21 +1,43 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Снаряд
+    /// </summary>
     public class Projectile : Entity
     {
+        /// <summary>
+        /// Скорость
+        /// </summary>
         [SerializeField] private float velocity;
 
+        /// <summary>
+        /// Время жизни снаряда
+        /// </summary>
         [SerializeField] private float lifeTime;
 
+        /// <summary>
+        /// Наносимый урон
+        /// </summary>
         [SerializeField] private int damage;
 
+        /// <summary>
+        /// Массив эффектов
+        /// </summary>
         [SerializeField] private ImpactEffect[] impactEffectPrefabs;
 
+        /// <summary>
+        /// Таймер
+        /// </summary>
         private float timer;
 
+        /// <summary>
+        /// Родитель снаряда
+        /// </summary>
         private Destructible parent;
         public Destructible Parent => parent;
+
 
         private void Update()
         {
@@ -33,25 +55,41 @@ namespace Shooter3D
 
             if (Physics.Raycast(transform.position, transform.forward, out hit, stepLength))
             {
-                Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
-                int targetMaterial = ((int)hit.collider.transform.root.GetComponent<ObjectMaterial>().CurrentObjectMaterial);
-
-                if (dest != null && dest != parent)
+                if (hit.collider.isTrigger == false)
                 {
-                    dest.ApplyDamage(damage);
-                }
+                    Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
+                    int targetMaterial = ((int)hit.collider.transform.root.GetComponent<ObjectMaterial>().CurrentObjectMaterial);
 
-                OnProjectileLifeEnd(hit.collider, hit.point, hit.normal, targetMaterial);
+                    if (dest != null && dest != parent)
+                    {
+                        dest.ApplyDamage(damage);
+                    }
+
+                    OnProjectileLifeEnd(hit.collider, hit.point, hit.normal, targetMaterial);
+                }
             }
 
             transform.position += new Vector3(step.x, step.y, step.z);
         }
 
+
+        /// <summary>
+        /// Задать родителя снаряда
+        /// </summary>
+        /// <param name="parent">Родительский объект</param>
         public void SetParentShooter(Destructible parent)
         {
             this.parent = parent;
         }
 
+
+        /// <summary>
+        /// Действие при конце жизни снаряда
+        /// </summary>
+        /// <param name="col">Коллайдер</param>
+        /// <param name="pos">Позиция</param>
+        /// <param name="normal">Нормаль</param>
+        /// <param name="targetMaterial">Материал цели</param>
         private void OnProjectileLifeEnd(Collider col, Vector3 pos, Vector3 normal, int targetMaterial)
         {
             if (impactEffectPrefabs[targetMaterial] != null)

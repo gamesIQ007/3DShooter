@@ -1,82 +1,50 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Класс уничтожаемых сущностей
+    /// </summary>
     public class Destructible : Entity
     {
-        [SerializeField] private bool indestructible;
-        public bool IsIndestructible => indestructible;
-
+        /// <summary>
+        /// Максимальное количество здоровья
+        /// </summary>
         [SerializeField] protected int hitPoints;
         public int MaxHitPoints => hitPoints;
 
+        /// <summary>
+        /// Текущее количество здоровья
+        /// </summary>
         private int currentHitPoints;
         public int HitPoints => currentHitPoints;
 
+        /// <summary>
+        /// Эвент, происходящий со смертью
+        /// </summary>
         [SerializeField] protected UnityEvent eventOnDeath;
         public UnityEvent EventOnDeath => eventOnDeath;
 
-        private float timeOfTemporaryIndestructible;
-
-        [SerializeField] private UnityEvent eventOnEnableTemporaryIndestructible;
-
-        [SerializeField] private UnityEvent eventOnDisableTemporaryIndestructible;
-
+        /// <summary>
+        /// Объект мёртв?
+        /// </summary>
         private bool isDead = false;
+
+        /// <summary>
+        /// Коллекция всех уничтожаемых объектов
+        /// </summary>
+        private static HashSet<Destructible> m_AllDestructibles;
+        public static IReadOnlyCollection<Destructible> AllDestructibles => m_AllDestructibles;
+
+
+        #region Unity Events
 
         protected virtual void Start()
         {
             currentHitPoints = hitPoints;
         }
-
-        protected virtual void Update()
-        {
-            if (timeOfTemporaryIndestructible <= 0) return;
-
-            timeOfTemporaryIndestructible -= Time.deltaTime;
-
-            if (timeOfTemporaryIndestructible <= 0)
-            {
-                DisableTemporaryIndestructible();
-            }
-        }
-
-        public void ApplyDamage(int damage)
-        {
-            if (indestructible || isDead) return;
-
-            currentHitPoints -= damage;
-            if (currentHitPoints <= 0)
-            {
-                isDead = true;
-                OnDeath();
-            }
-        }
-
-        public void ApplyTemporaryIndestructible(float time)
-        {
-            timeOfTemporaryIndestructible += time;
-            indestructible = true;
-            eventOnEnableTemporaryIndestructible?.Invoke();
-        }
-
-        protected virtual void OnDeath()
-        {
-            Destroy(gameObject);
-            eventOnDeath?.Invoke();
-        }
-
-        private void DisableTemporaryIndestructible()
-        {
-            indestructible = false;
-            timeOfTemporaryIndestructible = 0;
-            eventOnDisableTemporaryIndestructible?.Invoke();
-        }
-
-        private static HashSet<Destructible> m_AllDestructibles;
-        public static IReadOnlyCollection<Destructible> AllDestructibles => m_AllDestructibles;
 
         protected virtual void OnEnable()
         {
@@ -91,6 +59,61 @@ namespace Shooter3D
         protected virtual void OnDestroy()
         {
             m_AllDestructibles.Remove(this);
+        }
+
+        #endregion
+
+
+        #region Public API
+
+        /// <summary>
+        /// Применить урон к объекту
+        /// </summary>
+        /// <param name="damage">Применяемый урон</param>
+        public void ApplyDamage(int damage)
+        {
+            if (isDead) return;
+
+            currentHitPoints -= damage;
+            if (currentHitPoints <= 0)
+            {
+                isDead = true;
+                OnDeath();
+            }
+        }
+
+        /// <summary>
+        /// Восстановить здоровье
+        /// </summary>
+        /// <param name="heal">Количество восстанавливаемого здоровья</param>
+        public void ApplyHeal(int heal)
+        {
+            currentHitPoints += heal;
+
+            if (currentHitPoints > hitPoints)
+            {
+                currentHitPoints = hitPoints;
+            }
+        }
+
+        /// <summary>
+        /// Полное восстановление здоровья
+        /// </summary>
+        public void HealFull()
+        {
+            currentHitPoints = hitPoints;
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Смерть объекта
+        /// </summary>
+        protected virtual void OnDeath()
+        {
+            Destroy(gameObject);
+            eventOnDeath?.Invoke();
         }
     }
 }
