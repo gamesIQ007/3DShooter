@@ -532,12 +532,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91180113}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39dc221b3fef7c048997604e394bec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructible: {fileID: 0}
+  destructible: {fileID: 1261364846}
   slider: {fileID: 91180116}
 --- !u!114 &91180116
 MonoBehaviour:
@@ -1840,6 +1840,55 @@ Transform:
   m_Father: {fileID: 1614958262}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &703583840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 703583842}
+  - component: {fileID: 703583841}
+  m_Layer: 0
+  m_Name: Shooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &703583841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703583840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bda2e8b03acd0748a4f1e0029a8bc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterMovement: {fileID: 1261364838}
+  weapon: {fileID: 1506548863}
+  spreadShootRig: {fileID: 157144948}
+  camera: {fileID: 963194227}
+  imageSight: {fileID: 1644717203}
+--- !u!4 &703583842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703583840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261364840}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3054,7 +3103,7 @@ Transform:
   m_Children:
   - {fileID: 1923892541}
   m_Father: {fileID: 1261364840}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -3112,7 +3161,7 @@ Transform:
   - {fileID: 719866374}
   - {fileID: 157144946}
   m_Father: {fileID: 1261364840}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1072274019
 GameObject:
@@ -3602,6 +3651,41 @@ MonoBehaviour:
   - m_Rig: {fileID: 1760087013}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1186910684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835327428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3343ef2f1228da14a92846b126be06eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCharacterController: {fileID: 1261364839}
+  targetCharacterMovement: {fileID: 1261364838}
+  animatorParametersName:
+    NormalizeMovementX: Normalize Movement X
+    NormalizeMovementZ: Normalize Movement Z
+    Sprint: Is Sprint
+    Croach: Is Croaching
+    Aiming: Is Aiming
+    Ground: Is Ground
+    Jump: Jump
+    GroundSpeed: Ground Speed
+    DistanceToGround: Distance To Ground
+  targetAnimator: {fileID: 1186910681}
+  fallFade:
+    Name: Jump Loop
+    Duration: 0.1
+  minDistanceToGroundByFall: 1.5
+  jumpIdleFade:
+    Name: Jump Loop
+    Duration: 0.03
+  jumpMoveFade:
+    Name: Movement Jump Blend
+    Duration: 0.03
 --- !u!1 &1261364837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3612,10 +3696,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1261364840}
   - component: {fileID: 1261364839}
+  - component: {fileID: 1261364847}
   - component: {fileID: 1261364838}
-  - component: {fileID: 1261364842}
   - component: {fileID: 1261364843}
-  - component: {fileID: 1261364844}
+  - component: {fileID: 1261364846}
   - component: {fileID: 1261364845}
   m_Layer: 0
   m_Name: Player Space Soldier
@@ -3676,27 +3760,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 703583842}
   - {fileID: 963194228}
   - {fileID: 1057824392}
   - {fileID: 2100754754}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1261364842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261364837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3343ef2f1228da14a92846b126be06eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetCharacterController: {fileID: 1261364839}
-  targetCharacterMovement: {fileID: 1261364838}
-  targetAnimator: {fileID: 1186910681}
 --- !u!114 &1261364843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3711,25 +3781,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetCharacterMovement: {fileID: 1261364838}
   targetCamera: {fileID: 963194229}
-  targetShooter: {fileID: 1261364844}
+  targetShooter: {fileID: 703583841}
   aimingOffset: {x: 0.5, y: 1.7, z: 2}
---- !u!114 &1261364844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261364837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bda2e8b03acd0748a4f1e0029a8bc42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterMovement: {fileID: 1261364838}
-  weapon: {fileID: 1506548863}
-  spreadShootRig: {fileID: 157144948}
-  camera: {fileID: 963194227}
-  imageSight: {fileID: 1644717203}
 --- !u!114 &1261364845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3743,6 +3796,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentObjectMaterial: 1
+--- !u!114 &1261364846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261364837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adaf4b6af54da0c46a9f8386d6bbe9d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nickname: 
+  hitPoints: 100
+  eventOnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!54 &1261364847
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261364837}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1268571689
 GameObject:
   m_ObjectHideFlags: 0
@@ -5547,6 +5633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drone
       objectReference: {fileID: 0}
+    - target: {fileID: 6218874321502257171, guid: 8bba80a56be928b4ca272bcfc82cce47, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bba80a56be928b4ca272bcfc82cce47, type: 3}
 --- !u!1 &1908440872
@@ -6431,7 +6521,7 @@ RectTransform:
   - {fileID: 1700042340}
   - {fileID: 91180114}
   m_Father: {fileID: 1261364840}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -2,12 +2,27 @@
 
 namespace Shooter3D
 {
-    public class CharacterMovementController : MonoBehaviour
+    /// <summary>
+    /// Управление вводом для персонажа
+    /// </summary>
+    public class CharacterInputController : MonoBehaviour
     {
+        /// <summary>
+        /// Класс перемещения персонажа
+        /// </summary>
         [SerializeField] private CharacterMovement targetCharacterMovement;
+        /// <summary>
+        /// Камера
+        /// </summary>
         [SerializeField] private ThirdPersonCamera targetCamera;
+        /// <summary>
+        /// Стрелок
+        /// </summary>
         [SerializeField] private PlayerShooter targetShooter;
 
+        /// <summary>
+        /// Смещение прицеливания
+        /// </summary>
         [SerializeField] private Vector3 aimingOffset;
 
 
@@ -16,6 +31,9 @@ namespace Shooter3D
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
+
+        #region Unity Events
 
         private void Update()
         {
@@ -68,8 +86,13 @@ namespace Shooter3D
 
             if (Input.GetMouseButton(0))
             {
-                targetShooter.Shoot();
+                if (targetCharacterMovement.IsAiming)
+                {
+                    targetShooter.Shoot();
+                }
             }
         }
+
+        #endregion
     }
 }

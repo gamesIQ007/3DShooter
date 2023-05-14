@@ -97,6 +97,8 @@ namespace Shooter3D
         {
             targetOffset = offset;
             defaultOffset = offset;
+
+            transform.SetParent(null);
         }
 
         private void Update()
