@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,10 +6,21 @@ using UnityEditor;
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Область кубической формы
+    /// </summary>
     public class CubeArea : MonoBehaviour
     {
+        /// <summary>
+        /// Вектор, задающий область
+        /// </summary>
         [SerializeField] private Vector3 area;
 
+
+        /// <summary>
+        /// Получить случайную точку внутри области
+        /// </summary>
+        /// <returns>Точка внутри области</returns>
         public Vector3 GetRandomInsideZone()
         {
             Vector3 result = transform.position;

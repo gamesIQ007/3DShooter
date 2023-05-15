@@ -2,14 +2,33 @@
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Конвертёр вращения камеры
+    /// </summary>
     public class ConverterCameraRotation : MonoBehaviour
     {
+        /// <summary>
+        /// Камера
+        /// </summary>
         [SerializeField] private new Transform camera;
+        /// <summary>
+        /// Позиция, куда направлена камера
+        /// </summary>
         [SerializeField] private Transform cameraLook;
+        /// <summary>
+        /// Смещение
+        /// </summary>
         [SerializeField] private Vector3 lookOffset;
 
+        /// <summary>
+        /// Верхний ограничитель угла обзора
+        /// </summary>
         [SerializeField] private float topAngleLimit;
+        /// <summary>
+        /// Нижний ограничитель угла обзора
+        /// </summary>
         [SerializeField] private float bottomAngleLimit;
+
 
         private void Update()
         {

@@ -1,14 +1,27 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shooter3D
 {
+    /// <summary>
+    /// Риг разброса при стрельбе
+    /// </summary>
     public class SpreadShootRig : MonoBehaviour
     {
+        /// <summary>
+        /// Риг
+        /// </summary>
         [SerializeField] private UnityEngine.Animations.Rigging.Rig spreadRig;
 
+        /// <summary>
+        /// Коэффициент изменения веса
+        /// </summary>
         [SerializeField] private float changeWeightLerpRate;
 
+        /// <summary>
+        /// Целевой вес
+        /// </summary>
         private float targetWeight;
+
 
         private void Update()
         {
@@ -20,6 +33,10 @@ namespace Shooter3D
             }
         }
 
+
+        /// <summary>
+        /// Разброс
+        /// </summary>
         public void Spread()
         {
             targetWeight = 1;

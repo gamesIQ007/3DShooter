@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Shooter3D
+﻿namespace Shooter3D
 {
     /// <summary>
     /// Игровой персонаж
