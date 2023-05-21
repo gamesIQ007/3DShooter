@@ -10,7 +10,11 @@ namespace Shooter3D
         /// <summary>
         /// Подбор предмета
         /// </summary>
-        PickupItem
+        PickupItem,
+        /// <summary>
+        /// Ввод кода
+        /// </summary>
+        EnteringCode
     }
 
     [System.Serializable]
@@ -55,6 +59,8 @@ namespace Shooter3D
 
         public override void StartAction()
         {
+            if (IsCanStart == false) return;
+
             base.StartAction();
 
             owner.position = Properties.InteractTransform.position;

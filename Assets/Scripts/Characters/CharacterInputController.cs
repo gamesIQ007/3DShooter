@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Shooter3D
 {
@@ -11,6 +12,10 @@ namespace Shooter3D
         /// Класс перемещения персонажа
         /// </summary>
         [SerializeField] private CharacterMovement targetCharacterMovement;
+        /// <summary>
+        /// Сборщик действий
+        /// </summary>
+        [SerializeField] private EntityActionCollector targetActionCollector;
         /// <summary>
         /// Камера
         /// </summary>
@@ -71,6 +76,16 @@ namespace Shooter3D
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 targetCharacterMovement.UnSprint();
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                List<EntityContextAction> actionsList = targetActionCollector.GetActionList<EntityContextAction>();
+
+                for (int i = 0; i < actionsList.Count; i++)
+                {
+                    actionsList[i].StartAction();
+                }
             }
 
             if (Input.GetMouseButtonDown(1))

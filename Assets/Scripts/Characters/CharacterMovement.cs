@@ -224,6 +224,8 @@ namespace Shooter3D
         /// </summary>
         private void Move()
         {
+            if (characterController.enabled == false) return;
+
             directionControl = Vector3.MoveTowards(directionControl, TargetDirectionControl, Time.deltaTime * accelerationRate);
 
             if (IsGrounded)

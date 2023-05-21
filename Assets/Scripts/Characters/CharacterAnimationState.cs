@@ -62,6 +62,9 @@ namespace Shooter3D
         public float Duration;
     }
 
+    /// <summary>
+    /// Состояние анимации персонажа
+    /// </summary>
     public class CharacterAnimationState : MonoBehaviour
     {
         /// <summary>
@@ -114,7 +117,7 @@ namespace Shooter3D
         private Vector3 inputControl;
 
 
-        private void Update()
+        private void LateUpdate()
         {
             Vector3 movementSpeed = transform.InverseTransformDirection(targetCharacterController.velocity);
 
