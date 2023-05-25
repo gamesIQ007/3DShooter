@@ -47,6 +47,11 @@ namespace Shooter3D
             drone.EventOnDeath.AddListener(OnDroneDeath);
 
             player = GameObject.FindGameObjectWithTag("Player").transform;
+
+            if (movementArea == null)
+            {
+                movementArea = FindObjectOfType<CubeArea>();
+            }
         }
 
         private void Update()
@@ -73,6 +78,7 @@ namespace Shooter3D
         /// </summary>
         private void UpdateAI()
         {
+            
             // Обновление позиции, в которую дрон перемещается
             if (transform.position == movementPosition)
             {

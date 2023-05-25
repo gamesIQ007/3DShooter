@@ -14,7 +14,11 @@ namespace Shooter3D
         /// <summary>
         /// Ввод кода
         /// </summary>
-        EnteringCode
+        EnteringCode,
+        /// <summary>
+        /// Забирание по лестнице
+        /// </summary>
+        ClimbingLadder
     }
 
     [System.Serializable]
@@ -41,6 +45,11 @@ namespace Shooter3D
         [SerializeField] private Transform owner;
 
         /// <summary>
+        /// Скорость перемещения к точке взаимодействия
+        /// </summary>
+        [SerializeField] private float moveToActionInteractTransformSpeed;
+
+        /// <summary>
         /// Тип взаимодействия
         /// </summary>
         [SerializeField] private InteractType type;
@@ -50,6 +59,30 @@ namespace Shooter3D
         /// Свойства действия
         /// </summary>
         private new ActionInteractProperties Properties;
+
+        /// <summary>
+        /// Позиции игрока и точки взаимодействия совпадают
+        /// </summary>
+        private bool positionEquals = false;
+
+        /// <summary>
+        /// Действие стартовало
+        /// </summary>
+        private bool actionStarted = false;
+
+
+        private void Update()
+        {
+            if (actionStarted)
+            {
+                owner.position = Vector3.MoveTowards(owner.position, Properties.InteractTransform.position, moveToActionInteractTransformSpeed * Time.deltaTime);
+                if (owner.position == Properties.InteractTransform.position)
+                {
+                    positionEquals = true;
+                    StartAction();
+                }
+            }
+        }
 
 
         public override void SetProperties(EntityActionProperties prop)
@@ -61,9 +94,17 @@ namespace Shooter3D
         {
             if (IsCanStart == false) return;
 
+            actionStarted = true;
+            owner.GetComponent<CharacterController>().enabled = false;
+
+            if (positionEquals != true) return;
+
+            owner.GetComponent<CharacterController>().enabled = true;
+
             base.StartAction();
 
-            owner.position = Properties.InteractTransform.position;
+            actionStarted = false;
+            positionEquals = false;
         }
     }
 }
