@@ -4689,6 +4689,21 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   teamId: 1
+--- !u!114 &1241908228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241908219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8712d502145e44ab7192118b6435d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewingAngle: 120
+  viewingDistance: 20
+  viewingHeight: 1.7
 --- !u!1 &1250107005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4972167997025983193, guid: 22d2c44fed4ffa743aac7afe4d993905, type: 3}
@@ -6288,6 +6303,7 @@ GameObject:
   - component: {fileID: 1636464662}
   - component: {fileID: 1636464661}
   - component: {fileID: 1636464660}
+  - component: {fileID: 1636464668}
   m_Layer: 0
   m_Name: Player Space Soldier
   m_TagString: Player
@@ -6445,6 +6461,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1636464668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636464659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f401e58e96a948346afa335af404b307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 0
+  collider: {fileID: 1636464666}
 --- !u!1 &1695505301
 GameObject:
   m_ObjectHideFlags: 0
