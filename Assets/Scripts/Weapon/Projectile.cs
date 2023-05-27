@@ -92,6 +92,8 @@ namespace Shooter3D
         /// <param name="targetMaterial">Материал цели</param>
         private void OnProjectileLifeEnd(Collider col, Vector3 pos, Vector3 normal, int targetMaterial)
         {
+            if (col is CharacterController) return;
+
             if (impactEffectPrefabs[targetMaterial] != null)
             {
                 ImpactEffect impact = Instantiate(impactEffectPrefabs[targetMaterial], pos, Quaternion.LookRotation(normal));

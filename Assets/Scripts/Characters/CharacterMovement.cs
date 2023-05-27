@@ -52,6 +52,11 @@ namespace Shooter3D
         public float CrouchHeight => crouchHeight;
 
         /// <summary>
+        /// Обновлять ли позицию. True, если персонаж - игрок
+        /// </summary>
+        [SerializeField] public bool UpdatePosition;
+
+        /// <summary>
         /// Прицеливается
         /// </summary>
         private bool isAiming;
@@ -243,7 +248,10 @@ namespace Shooter3D
 
             movementDirection += Physics.gravity * Time.deltaTime;
 
-            characterController.Move(movementDirection * Time.deltaTime);
+            if (UpdatePosition)
+            {
+                characterController.Move(movementDirection * Time.deltaTime);
+            }
         }
 
         /// <summary>

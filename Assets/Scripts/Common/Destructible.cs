@@ -38,6 +38,17 @@ namespace Shooter3D
         private static HashSet<Destructible> m_AllDestructibles;
         public static IReadOnlyCollection<Destructible> AllDestructibles => m_AllDestructibles;
 
+        /// <summary>
+        /// ID нейтральной команды
+        /// </summary>
+        public const int TeamIdNeutral = 0;
+
+        /// <summary>
+        /// ID команды
+        /// </summary>
+        [SerializeField] private int teamId;
+        public int TeamId => teamId;
+
 
         #region Unity Events
 
