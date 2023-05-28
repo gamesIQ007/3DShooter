@@ -87,6 +87,11 @@ namespace Shooter3D
         public float DistanceToGround => distanceToGround;
         public bool IsGrounded => distanceToGround < 0.001f; // в обучении говорится про 0.01f, но с ним работает хуже
 
+        /// <summary>
+        /// Текущая скорость
+        /// </summary>
+        public float CurrentSpeed => GetCurrentSpeedByState();
+
         // Public
         /// <summary>
         /// Вектор управления

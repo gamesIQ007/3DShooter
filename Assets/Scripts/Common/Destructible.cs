@@ -28,9 +28,19 @@ namespace Shooter3D
         public UnityEvent EventOnDeath => eventOnDeath;
 
         /// <summary>
+        /// Событие при получении урона
+        /// </summary>
+        [SerializeField] private UnityEvent eventOnGetDamage;
+        /// <summary>
+        /// Действие при получении урона
+        /// </summary>
+        public UnityAction<Destructible> OnGetDamage;
+
+        /// <summary>
         /// Объект мёртв?
         /// </summary>
         private bool isDead = false;
+        public bool IsDead => isDead;
 
         /// <summary>
         /// Коллекция всех уничтожаемых объектов
@@ -81,11 +91,17 @@ namespace Shooter3D
         /// Применить урон к объекту
         /// </summary>
         /// <param name="damage">Применяемый урон</param>
-        public void ApplyDamage(int damage)
+        /// <param name="other">Тот, кто наносит урон</param>
+        public void ApplyDamage(int damage, Destructible other)
         {
             if (isDead) return;
 
             currentHitPoints -= damage;
+
+            OnGetDamage?.Invoke(other);
+
+            eventOnGetDamage?.Invoke();
+
             if (currentHitPoints <= 0)
             {
                 isDead = true;
@@ -113,6 +129,94 @@ namespace Shooter3D
         public void HealFull()
         {
             currentHitPoints = hitPoints;
+        }
+
+        /// <summary>
+        /// Найти ближайшего
+        /// </summary>
+        /// <param name="position">Позиция</param>
+        /// <returns>Ближайший дестрактибл</returns>
+        public static Destructible FindNearest(Vector3 position)
+        {
+            float minDist = float.MaxValue;
+            Destructible target = null;
+
+            foreach (Destructible dest in AllDestructibles)
+            {
+                float curDist = Vector3.Distance(dest.transform.position, position);
+
+                if (curDist < minDist)
+                {
+                    curDist = minDist;
+                    target = dest;
+                }
+            }
+
+            return target;
+        }
+
+        /// <summary>
+        /// Найти ближайшего из другой команды
+        /// </summary>
+        /// <param name="destructible">Исходный дестрактибл</param>
+        /// <returns>Ближайший дестрактибл</returns>
+        public static Destructible FindNearestNonTeamMember(Destructible destructible)
+        {
+            float minDist = float.MaxValue;
+            Destructible target = null;
+
+            foreach (Destructible dest in AllDestructibles)
+            {
+                float curDist = Vector3.Distance(dest.transform.position, destructible.transform.position);
+
+                if (curDist < minDist && dest.TeamId != destructible.TeamId)
+                {
+                    curDist = minDist;
+                    target = dest;
+                }
+            }
+
+            return target;
+        }
+
+        /// <summary>
+        /// Получить список всех членов команды
+        /// </summary>
+        /// <param name="teamId">ID команды</param>
+        /// <returns>Список членов команды</returns>
+        public static List<Destructible> GetAllTeamMembers(int teamId)
+        {
+            List<Destructible> teamDestructible = new List<Destructible>();
+
+            foreach (Destructible dest in AllDestructibles)
+            {
+                if (dest.TeamId == teamId)
+                {
+                    teamDestructible.Add(dest);
+                }
+            }
+
+            return teamDestructible;
+        }
+
+        /// <summary>
+        /// Получить список всех не членов команды
+        /// </summary>
+        /// <param name="teamId">ID команды</param>
+        /// <returns>Список не членов команды</returns>
+        public static List<Destructible> GetAllNonTeamMembers(int teamId)
+        {
+            List<Destructible> teamDestructible = new List<Destructible>();
+
+            foreach (Destructible dest in AllDestructibles)
+            {
+                if (dest.TeamId != teamId)
+                {
+                    teamDestructible.Add(dest);
+                }
+            }
+
+            return teamDestructible;
         }
 
         #endregion

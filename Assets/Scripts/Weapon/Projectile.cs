@@ -62,7 +62,7 @@ namespace Shooter3D
 
                     if (dest != null && dest != parent)
                     {
-                        dest.ApplyDamage(damage);
+                        dest.ApplyDamage(damage, parent);
                     }
 
                     OnProjectileLifeEnd(hit.collider, hit.point, hit.normal, targetMaterial);

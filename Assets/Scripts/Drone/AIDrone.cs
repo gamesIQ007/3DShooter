@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Shooter3D
 {
@@ -15,9 +16,9 @@ namespace Shooter3D
         [SerializeField] private CubeArea movementArea;
 
         /// <summary>
-        /// Расстояние обнаружения противника
+        /// Смотрящий на коллайдеры
         /// </summary>
-        [SerializeField] private float angryDistance;
+        [SerializeField] private ColliderViewer colliderViewer;
 
         /// <summary>
         /// Контролируемый дрон
@@ -33,11 +34,6 @@ namespace Shooter3D
         /// </summary>
         private Transform shootTarget;
 
-        /// <summary>
-        /// Игрок
-        /// </summary>
-        private Transform player;
-
 
         #region Unity Events
 
@@ -46,12 +42,12 @@ namespace Shooter3D
             drone = GetComponent<Drone>();
             drone.EventOnDeath.AddListener(OnDroneDeath);
 
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-
             if (movementArea == null)
             {
                 movementArea = FindObjectOfType<CubeArea>();
             }
+
+            drone.OnGetDamage += OnGetDamage;
         }
 
         private void Update()
@@ -62,15 +58,24 @@ namespace Shooter3D
         private void OnDestroy()
         {
             drone.EventOnDeath.RemoveListener(OnDroneDeath);
+            drone.OnGetDamage -= OnGetDamage;
         }
 
         #endregion
 
 
-        private void OnDroneDeath()
+        #region Handlers
+
+        /// <summary>
+        /// Действие при получении урона
+        /// </summary>
+        /// <param name="other">Кто наносит урон</param>
+        private void OnGetDamage(Destructible other)
         {
-            enabled = false;
+            ActionAssignTargetAllTeamMembers(other.transform);
         }
+
+        #endregion
 
 
         /// <summary>
@@ -78,8 +83,21 @@ namespace Shooter3D
         /// </summary>
         private void UpdateAI()
         {
-            
-            // Обновление позиции, в которую дрон перемещается
+            ActionFindShootingTarget();
+
+            ActionMove();
+
+            ActionFire();
+        }
+
+
+        #region Actions
+
+        /// <summary>
+        /// Действие передвижения
+        /// </summary>
+        private void ActionMove()
+        {
             if (transform.position == movementPosition)
             {
                 movementPosition = movementArea.GetRandomInsideZone();
@@ -90,13 +108,6 @@ namespace Shooter3D
                 movementPosition = movementArea.GetRandomInsideZone();
             }
 
-            // Поиск цели
-            if (Vector3.Distance(transform.position, player.position) <= angryDistance)
-            {
-                shootTarget = player;
-            }
-
-            // Перемещение
             drone.MoveTo(movementPosition);
 
             if (shootTarget != null)
@@ -107,23 +118,88 @@ namespace Shooter3D
             {
                 drone.LookAt(movementPosition);
             }
+        }
 
-            // Стрельба
+        /// <summary>
+        /// Действие нахождения цели для стрельбы
+        /// </summary>
+        private void ActionFindShootingTarget()
+        {
+            Transform potencionalTarget = FindShootTarget();
+
+            if (potencionalTarget != null)
+            {
+                ActionAssignTargetAllTeamMembers(potencionalTarget);
+            }
+        }
+
+        /// <summary>
+        /// Действие стрельбы
+        /// </summary>
+        private void ActionFire()
+        {
             if (shootTarget != null)
             {
                 drone.Fire(shootTarget.position);
             }
         }
 
-
-#if UNITY_EDITOR
-
-        private void OnDrawGizmos()
+        /// <summary>
+        /// Задать цель для всех членов команды
+        /// </summary>
+        /// <param name="other">Цель</param>
+        private void ActionAssignTargetAllTeamMembers(Transform other)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, angryDistance);
+            List<Destructible> team = Destructible.GetAllTeamMembers(drone.TeamId);
+
+            foreach (Destructible dest in team)
+            {
+                AIDrone ai = dest.transform.root.GetComponent<AIDrone>();
+
+                if (ai != null && ai.enabled == true)
+                {
+                    ai.SetShootTarget(other);
+                }
+            }
         }
 
-#endif
+        #endregion
+
+
+        /// <summary>
+        /// Событие при смерти дрона
+        /// </summary>
+        private void OnDroneDeath()
+        {
+            enabled = false;
+        }
+        
+        /// <summary>
+         /// Задать цель стрельбы
+         /// </summary>
+         /// <param name="target">Цель</param>
+        public void SetShootTarget(Transform target)
+        {
+            shootTarget = target;
+        }
+
+        /// <summary>
+        /// Найти цель стрельбы
+        /// </summary>
+        /// <returns>Цель стрельбы</returns>
+        private Transform FindShootTarget()
+        {
+            List<Destructible> targets = Destructible.GetAllNonTeamMembers(drone.TeamId);
+
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (colliderViewer.IsObjectVisible(targets[i].gameObject))
+                {
+                    return targets[i].transform;
+                }
+            }
+
+            return null;
+        }
     }
 }
