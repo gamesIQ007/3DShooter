@@ -38,7 +38,11 @@ namespace Shooter3D
             /// <summary>
             /// Поиск цели
             /// </summary>
-            SeekTarget
+            SeekTarget,
+            /// <summary>
+            /// Поиск цели
+            /// </summary>
+            SeekTargetInArea
         }
 
         /// <summary>
@@ -77,6 +81,16 @@ namespace Shooter3D
         /// Смотрящий на коллайдеры
         /// </summary>
         [SerializeField] private ColliderViewer colliderViewer;
+		
+		/// <summary>
+		/// Радиус, в котором будут вестись поиски цели
+		/// </summary>
+		[SerializeField] private float seekTargetRadius;
+		
+		/// <summary>
+		/// Время поиска цели
+		/// </summary>
+		[SerializeField] private float seekTargetTime;
 
         /// <summary>
         /// Путь перемещения
@@ -99,6 +113,18 @@ namespace Shooter3D
         /// Цель поиска
         /// </summary>
         private Vector3 seekTarget;
+        /// <summary>
+        /// Цель поиска в области
+        /// </summary>
+        private Vector3 seekTargetArea;
+		/// <summary>
+        /// Таймер поиска цели
+        /// </summary>
+		private float seekTargetTimer;
+		/// <summary>
+        /// Идёт поиск цели
+        /// </summary>
+		private bool seekingTarget = false;
 
 
         #region Unity Events
@@ -118,6 +144,7 @@ namespace Shooter3D
         {
             SyncAgentAndCharacterMovement();
             UpdateAI();
+			seekTargetTimer -= Time.deltaTime;
         }
 
         private void OnDestroy()
@@ -183,7 +210,36 @@ namespace Shooter3D
 
                 if (AgentReachedDestination())
                 {
-                    StartBehaviour(AIBehaviour.PatrolRandom);
+					StartBehaviour(AIBehaviour.SeekTargetInArea);
+                }
+            }
+
+            if (aIBehaviour == AIBehaviour.SeekTargetInArea)
+            {
+				if (seekingTarget == false)
+				{
+					seekTargetTimer = seekTargetTime;
+					seekingTarget = true;
+					seekTargetArea = seekTarget + Random.insideUnitSphere * seekTargetRadius;
+				}
+				
+				agent.CalculatePath(seekTargetArea, navMeshPath);
+                agent.SetPath(navMeshPath);
+				
+				if (AgentReachedDestination() && seekingTarget)
+                {
+					if (seekTargetTimer > 0)
+					{
+						seekTargetArea = seekTarget + Random.insideUnitSphere * seekTargetRadius;
+						agent.CalculatePath(seekTargetArea, navMeshPath);
+						agent.SetPath(navMeshPath);
+					}
+
+					if (seekTargetTimer <= 0)
+					{
+						seekingTarget = false;
+						StartBehaviour(AIBehaviour.PatrolRandom);
+					}
                 }
             }
 
@@ -296,6 +352,12 @@ namespace Shooter3D
                 characterMovement.UnAiming();
             }
 
+            if (state == AIBehaviour.SeekTargetInArea)
+            {
+                agent.isStopped = false;
+                characterMovement.UnAiming();
+            }
+
             aIBehaviour = state;
         }
 
@@ -371,5 +433,16 @@ namespace Shooter3D
             }
             return false;
         }
+
+
+#if UNITY_EDITOR
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, seekTargetRadius);
+        }
+
+#endif
     }
 }

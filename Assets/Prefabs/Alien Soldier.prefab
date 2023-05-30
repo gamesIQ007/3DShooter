@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 1241908228}
   m_Layer: 0
   m_Name: Alien Soldier
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -632,6 +632,8 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   patrolPathNodeIndex: 0
   colliderViewer: {fileID: 1241908228}
+  seekTargetRadius: 7
+  seekTargetTime: 10
 --- !u!114 &1241908227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,7 +682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewingAngle: 120
-  viewingDistance: 20
+  viewingDistance: 10
   viewingHeight: 1.7
 --- !u!1 &8087475506236615350
 GameObject:
