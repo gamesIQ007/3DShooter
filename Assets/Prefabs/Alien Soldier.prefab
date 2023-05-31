@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 1241908226}
   - component: {fileID: 1241908227}
   - component: {fileID: 1241908228}
+  - component: {fileID: 1937636412351553234}
   m_Layer: 0
   m_Name: Alien Soldier
   m_TagString: Untagged
@@ -632,6 +633,8 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   patrolPathNodeIndex: 0
   colliderViewer: {fileID: 1241908228}
+  colliderViewerSideView: {fileID: 1937636412351553234}
+  sideViewTime: 5
   seekTargetRadius: 7
   seekTargetTime: 10
 --- !u!114 &1241908227
@@ -682,7 +685,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewingAngle: 120
-  viewingDistance: 10
+  viewingDistance: 15
+  viewingHeight: 1.7
+--- !u!114 &1937636412351553234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8087475506206047900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8712d502145e44ab7192118b6435d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewingAngle: 160
+  viewingDistance: 15
   viewingHeight: 1.7
 --- !u!1 &8087475506236615350
 GameObject:

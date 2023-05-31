@@ -83,6 +83,16 @@ namespace Shooter3D
         [SerializeField] private ColliderViewer colliderViewer;
 		
 		/// <summary>
+        /// Смотрящий на коллайдеры, боковое зрение
+        /// </summary>
+        [SerializeField] private ColliderViewer colliderViewerSideView;
+		
+		/// <summary>
+        /// Время нахождения в боковом зрении, прежде чем заметят
+        /// </summary>
+        [SerializeField] private float sideViewTime;
+		
+		/// <summary>
 		/// Радиус, в котором будут вестись поиски цели
 		/// </summary>
 		[SerializeField] private float seekTargetRadius;
@@ -125,6 +135,14 @@ namespace Shooter3D
         /// Идёт поиск цели
         /// </summary>
 		private bool seekingTarget = false;
+		/// <summary>
+        /// Таймер бокового зрения
+        /// </summary>
+		private float sideViewTimer;
+		/// <summary>
+        /// Цель в боковом зрении
+        /// </summary>
+		private bool targetInSideView = false;
 
 
         #region Unity Events
@@ -145,6 +163,7 @@ namespace Shooter3D
             SyncAgentAndCharacterMovement();
             UpdateAI();
 			seekTargetTimer -= Time.deltaTime;
+			sideViewTimer -= Time.deltaTime;
         }
 
         private void OnDestroy()
@@ -286,6 +305,21 @@ namespace Shooter3D
                     StartBehaviour(AIBehaviour.SeekTarget);
                 }
             }
+            
+			if (colliderViewerSideView.IsObjectVisible(potencialTarget) && colliderViewer.IsObjectVisible(potencialTarget) == false)
+			{
+				if (targetInSideView == false)
+				{
+					sideViewTimer = sideViewTime;
+					targetInSideView = true;
+				}
+				if (targetInSideView && sideViewTimer <= 0)
+				{
+					targetInSideView = false;
+					pursuitTarget = potencialTarget.transform;
+					ActionAssignTargetAllTeamMembers(pursuitTarget);
+				}
+			}
         }
 
         /// <summary>

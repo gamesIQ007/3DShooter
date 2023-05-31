@@ -1161,6 +1161,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alien Soldier (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8087475506206047900, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
 --- !u!4 &147505040 stripped
@@ -3763,6 +3767,10 @@ PrefabInstance:
     - target: {fileID: 8087475506206047900, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
       propertyPath: m_Name
       value: Alien Soldier (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087475506206047900, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
@@ -9717,6 +9725,10 @@ PrefabInstance:
     - target: {fileID: 8087475506206047900, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
       propertyPath: m_Name
       value: Alien Soldier (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087475506206047900, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f00eb43b038b6a4fb1f512486f9d2f9, type: 3}
