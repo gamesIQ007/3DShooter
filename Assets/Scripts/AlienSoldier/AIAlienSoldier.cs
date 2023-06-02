@@ -49,6 +49,7 @@ namespace Shooter3D
         /// Поведение
         /// </summary>
         [SerializeField] private AIBehaviour aIBehaviour;
+        public AIBehaviour AI_Behaviour => aIBehaviour;
 
         /// <summary>
         /// Солдат пришельцев
@@ -60,6 +61,9 @@ namespace Shooter3D
         /// </summary>
         [SerializeField] private CharacterMovement characterMovement;
 
+        /// <summary>
+        /// Расстояние для атаки
+        /// </summary>
         [SerializeField] private float aimingDistance;
 
         /// <summary>
@@ -143,6 +147,7 @@ namespace Shooter3D
         /// Цель в боковом зрении
         /// </summary>
 		private bool targetInSideView = false;
+        public bool TargetInSideView => targetInSideView;
 
 
         #region Unity Events
@@ -320,6 +325,10 @@ namespace Shooter3D
 					ActionAssignTargetAllTeamMembers(pursuitTarget);
 				}
 			}
+            else
+            {
+                targetInSideView = false;
+            }
         }
 
         /// <summary>
