@@ -9380,6 +9380,7 @@ GameObject:
   - component: {fileID: 1636464661}
   - component: {fileID: 1636464660}
   - component: {fileID: 1636464668}
+  - component: {fileID: 1636464669}
   m_Layer: 0
   m_Name: Player Space Soldier
   m_TagString: Player
@@ -9554,6 +9555,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliderType: 0
   collider: {fileID: 1636464666}
+--- !u!114 &1636464669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636464659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e2d799b55c01734384c954829121445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterMovement: {fileID: 1636464664}
+  weapon: {fileID: 147505042}
+  noiseRadiusCrouch: 2
+  noiseRadiusWalk: 7
+  noiseRadiusAim: 4
+  noiseRadiusSprint: 15
+  noiseRadiusFire: 30
+  safetyMoveSpeed: 4
 --- !u!1 &1649355634
 GameObject:
   m_ObjectHideFlags: 0
