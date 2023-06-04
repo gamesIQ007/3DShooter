@@ -172,6 +172,15 @@ namespace Shooter3D
             targetOffset = defaultOffset;
         }
 
+        /// <summary>
+        /// Задать цель
+        /// </summary>
+        /// <param name="target">Цель</param>
+        public void SetTarget(Transform targetTransform)
+        {
+            target = targetTransform;
+        }
+
         #endregion
 
 
