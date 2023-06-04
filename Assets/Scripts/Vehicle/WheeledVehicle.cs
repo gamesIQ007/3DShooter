@@ -129,9 +129,6 @@ namespace Shooter3D
 
         public override float LinearVelocity => rigidbody.velocity.magnitude;
 
-        /// <summary>
-        /// Ригид
-        /// </summary>
         private new Rigidbody rigidbody;
 
 
