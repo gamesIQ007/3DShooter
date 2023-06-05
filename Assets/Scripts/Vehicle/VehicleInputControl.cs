@@ -23,6 +23,8 @@ namespace Shooter3D
         [SerializeField] private Vector3 cameraOffset;
 
 
+        #region Unity Events
+
         protected virtual void Start()
         {
             if (thirdPersonCamera != null)
@@ -37,6 +39,8 @@ namespace Shooter3D
             vehicle.SetTargetControl(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Jump"), Input.GetAxis("Vertical")));
             thirdPersonCamera.RotationControl = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         }
+
+        #endregion
 
 
         /// <summary>

@@ -22,20 +22,26 @@ namespace Shooter3D
         [SerializeField] private int interactAmount;
 
         /// <summary>
-        /// Свойства действия взаимодействия
+        /// Событие при начале взаимодействии
         /// </summary>
-        [SerializeField] private ActionInteractProperties actionProperties;
+        [SerializeField] private UnityEvent eventStartInteract;
+        public UnityEvent EventStartInteract => eventStartInteract;
 
         /// <summary>
-        /// Событие при взаимодействии
+        /// Событие при окончании взаимодействии
         /// </summary>
-        [SerializeField] private UnityEvent eventOnInteract;
-        public UnityEvent EventOnInteract => eventOnInteract;
+        [SerializeField] private UnityEvent eventEndInteract;
+        public UnityEvent EventEndInteract => eventEndInteract;
+
+        /// <summary>
+        /// Свойства действия взаимодействия
+        /// </summary>
+        [SerializeField] protected ActionInteractProperties actionProperties;
 
         /// <summary>
         /// Тот, кто совершает действие
         /// </summary>
-        private GameObject owner;
+        protected GameObject owner;
 
         /// <summary>
         /// Действие взаимодействия
@@ -136,6 +142,10 @@ namespace Shooter3D
         private void ActionStarted()
         {
             OnStartAction(owner);
+
+            interactAmount--;
+
+            eventStartInteract?.Invoke();
         }
 
         /// <summary>
@@ -144,14 +154,14 @@ namespace Shooter3D
         private void ActionEnded()
         {
             action.IsCanStart = false;
+            action.IsCanEnd = false;
+
             action.EventOnStart.RemoveListener(ActionStarted);
             action.EventOnEnd.RemoveListener(ActionEnded);
 
-            eventOnInteract?.Invoke();
+            eventEndInteract?.Invoke();
 
             OnEndAction(owner);
-
-            interactAmount--;
         }
     }
 }
