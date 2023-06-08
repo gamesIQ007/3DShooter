@@ -22,6 +22,15 @@ namespace Shooter3D
         /// Подсказка
         /// </summary>
         public GameObject hint;
+
+        /// <summary>
+        /// Массив позиций выхода из транспорта
+        /// </summary>
+        public Transform[] exitPositions;
+        /// <summary>
+        /// Радиус точки выхода из транспорта
+        /// </summary>
+        public float exitRadius;
     }
 
 
@@ -60,6 +69,7 @@ namespace Shooter3D
         /// В транспорте
         /// </summary>
         private bool inVehicle;
+
 
         #region Unity Events
 
@@ -134,6 +144,17 @@ namespace Shooter3D
 
             // Show visual model
             visualModel.transform.localPosition = new Vector3(0, 0, 0);
+
+            for (int i = 0; i < prop.exitPositions.Length - 1; i++)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(prop.exitPositions[i].position, prop.exitRadius);
+                if (hitColliders.Length <= 1)
+                {
+                    visualModel.transform.root.position = prop.exitPositions[i].position;
+                    break;
+                }
+                visualModel.transform.root.position = prop.exitPositions[prop.exitPositions.Length - 1].position;
+            }
         }
     }
 }
