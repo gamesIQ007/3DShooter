@@ -21,6 +21,12 @@ namespace Shooter3D
         [SerializeField] private PlayerShooter targetShooter;
 
         /// <summary>
+        /// Риг разброса при стрельбе
+        /// </summary>
+        [SerializeField] private SpreadShootRig spreadShootRig;
+
+
+        /// <summary>
         /// Смещение прицеливания
         /// </summary>
         [SerializeField] private Vector3 aimingOffset;
@@ -93,6 +99,7 @@ namespace Shooter3D
                 if (targetCharacterMovement.IsAiming)
                 {
                     targetShooter.Shoot();
+                    spreadShootRig.Spread();
                 }
             }
         }

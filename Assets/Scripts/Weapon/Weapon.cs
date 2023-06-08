@@ -74,7 +74,7 @@ namespace Shooter3D
             owner = transform.root.GetComponent<Destructible>();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (refireTimer > 0)
             {

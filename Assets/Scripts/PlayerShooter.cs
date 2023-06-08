@@ -8,21 +8,14 @@ namespace Shooter3D
     public class PlayerShooter : MonoBehaviour
     {
         /// <summary>
-        /// Перемещаемый персонаж
-        /// </summary>
-        [SerializeField] private CharacterMovement characterMovement;
-        /// <summary>
         /// Оружие
         /// </summary>
         [SerializeField] private Weapon weapon;
         /// <summary>
-        /// Риг разброса при стрельбе
-        /// </summary>
-        [SerializeField] private SpreadShootRig spreadShootRig;
-        /// <summary>
         /// Камера
         /// </summary>
         [SerializeField] private new Camera camera;
+        public Camera Camera => camera;
         /// <summary>
         /// Знак прицела
         /// </summary>
@@ -41,11 +34,14 @@ namespace Shooter3D
             {
                 weapon.FirePointLookAt(hit.point);
             }
+            else
+            {
+                weapon.FirePointLookAt(camera.transform.position + ray.direction * 1000);
+            }
 
             if (weapon.CanFire)
             {
                 weapon.Fire();
-                spreadShootRig.Spread();
                 // Можно добавить отключение рига Rifle_Aim, для тряски оружия. Я на половину просто отключил его
             }
         }
