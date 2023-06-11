@@ -1083,6 +1083,8 @@ MonoBehaviour:
     vehicle: {fileID: 1786199725}
     vehicleInput: {fileID: 816352334509520976}
     hint: {fileID: 2450035327341998849}
+    exitPositions: []
+    exitRadius: 0
 --- !u!1 &1069782148550072542
 GameObject:
   m_ObjectHideFlags: 0

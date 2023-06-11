@@ -67,6 +67,11 @@ namespace Shooter3D
         [SerializeField] private float aimingDistance;
 
         /// <summary>
+        /// Расстояние обнаружения
+        /// </summary>
+        [SerializeField] private float detectedDistance;
+
+        /// <summary>
         /// Агент перемещения
         /// </summary>
         [SerializeField] private NavMeshAgent agent;
@@ -148,17 +153,23 @@ namespace Shooter3D
         /// </summary>
 		private bool targetInSideView = false;
         public bool TargetInSideView => targetInSideView;
+        /// <summary>
+        /// Отправлено уведомление об обнаружении
+        /// </summary>
+        private bool isPlayerDetected;
 
 
         #region Unity Events
 
         private void Start()
         {
-            potencialTarget = Destructible.FindNearestNonTeamMember(alienSoldier)?.gameObject;
+            potencialTarget = Player.Instance.gameObject;
 
             characterMovement.UpdatePosition = false;
             navMeshPath = new NavMeshPath();
             StartBehaviour(aIBehaviour);
+
+            alienSoldier.EventOnDeath.AddListener(OnDeath);
 
             alienSoldier.OnGetDamage += OnGetDamage;
         }
@@ -173,6 +184,7 @@ namespace Shooter3D
 
         private void OnDestroy()
         {
+            alienSoldier.EventOnDeath.RemoveListener(OnDeath);
             alienSoldier.OnGetDamage -= OnGetDamage;
         }
 
@@ -219,6 +231,10 @@ namespace Shooter3D
                 {
                     characterMovement.Aiming();
 
+                    if (Vector3.Angle(pursuitTarget.position - transform.position, transform.forward) < 10)
+                    {
+                        agent.isStopped = true;
+                    }
                     alienSoldier.Fire(pursuitTarget.position + new Vector3(0, 1, 0));
                 }
                 else
@@ -229,6 +245,8 @@ namespace Shooter3D
 
             if (aIBehaviour == AIBehaviour.SeekTarget)
             {
+                SendPlayerStartPursuit();
+
                 agent.CalculatePath(seekTarget, navMeshPath);
                 agent.SetPath(navMeshPath);
 
@@ -269,6 +287,8 @@ namespace Shooter3D
 
             if (aIBehaviour == AIBehaviour.PatrolRandom)
             {
+                SendPlayerStopPursuit();
+
                 if (AgentReachedDestination())
                 {
                     StartCoroutine(SetBehaviourOnTime(AIBehaviour.Idle, currentPathNode.IdleTime));
@@ -277,6 +297,8 @@ namespace Shooter3D
 
             if (aIBehaviour == AIBehaviour.CirclePatrol)
             {
+                SendPlayerStopPursuit();
+
                 if (AgentReachedDestination())
                 {
                     StartCoroutine(SetBehaviourOnTime(AIBehaviour.Idle, currentPathNode.IdleTime));
@@ -296,8 +318,10 @@ namespace Shooter3D
         {
             if (potencialTarget == null) return;
 
-            if (colliderViewer.IsObjectVisible(potencialTarget))
+            if (colliderViewer.IsObjectVisible(potencialTarget) || Vector3.Distance(transform.position, potencialTarget.transform.position) <= detectedDistance)
             {
+                SendPlayerStartPursuit();
+
                 pursuitTarget = potencialTarget.transform;
                 ActionAssignTargetAllTeamMembers(pursuitTarget);
             }
@@ -477,13 +501,48 @@ namespace Shooter3D
             return false;
         }
 
+        /// <summary>
+        /// Отправить уведомление о начале преследования
+        /// </summary>
+        private void SendPlayerStartPursuit()
+        {
+            if (isPlayerDetected == false)
+            {
+                Player.Instance.StartPursuit();
+                isPlayerDetected = true;
+            }
+        }
+
+        /// <summary>
+        /// Отправить уведомление об окончании преследования
+        /// </summary>
+        private void SendPlayerStopPursuit()
+        {
+            if (isPlayerDetected)
+            {
+                Player.Instance.StopPursuit();
+                isPlayerDetected = false;
+            }
+        }
+
+        /// <summary>
+        /// При смерти
+        /// </summary>
+        private void OnDeath()
+        {
+            SendPlayerStopPursuit();
+        }
+
 
 #if UNITY_EDITOR
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, seekTargetRadius);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, detectedDistance);
         }
 
 #endif

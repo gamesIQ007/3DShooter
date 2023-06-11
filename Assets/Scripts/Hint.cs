@@ -40,7 +40,7 @@ namespace Shooter3D
             canvas = GetComponent<Canvas>();
             canvas.worldCamera = Camera.main;
             lookTransform = Camera.main.transform;
-            target = GameObject.FindGameObjectWithTag("Player").transform;
+            target = Player.Instance.transform;
         }
 
         private void Update()
