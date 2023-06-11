@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1491725781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491725782}
+  - component: {fileID: 1491725783}
+  m_Layer: 0
+  m_Name: Action_UseVehicles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1491725782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491725781}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5213377594999627006}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1491725783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491725781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee521f83c6c10b42bf145e316006393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventOnStart:
+    m_PersistentCalls:
+      m_Calls: []
+  eventOnEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  animator: {fileID: 1815855430354929957}
+  actionAnimationName: 
+  timeDuration: 0
+  IsCanStart: 0
+  IsCanEnd: 0
+  owner: {fileID: 5213377595859645966}
+  type: 2
+  characterController: {fileID: 5213377595859645967}
+  characterMovement: {fileID: 5213377595859645965}
+  characterInputController: {fileID: 5213377595859645954}
+  visualModel: {fileID: 5213377595304276291}
+  thirdPersonCamera: {fileID: 5213377596564747146}
 --- !u!1 &5213377594835667525
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +334,7 @@ Transform:
   - {fileID: 5213377595368375385}
   - {fileID: 5213377596301898697}
   - {fileID: 5213377595615621365}
+  - {fileID: 1491725782}
   m_Father: {fileID: 5213377595859645966}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -909,7 +972,6 @@ MonoBehaviour:
   IsCanStart: 0
   IsCanEnd: 0
   owner: {fileID: 5213377595859645966}
-  moveToActionInteractTransformSpeed: 1
   type: 0
 --- !u!1 &5213377595410719962
 GameObject:
@@ -1264,8 +1326,7 @@ MonoBehaviour:
   IsCanStart: 0
   IsCanEnd: 0
   owner: {fileID: 5213377595859645966}
-  moveToActionInteractTransformSpeed: 1
-  type: 2
+  type: 3
 --- !u!1 &5213377595711863612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,7 +1811,9 @@ MonoBehaviour:
   targetCharacterMovement: {fileID: 5213377595859645965}
   targetCamera: {fileID: 5213377596564747146}
   targetShooter: {fileID: 5213377596106897968}
+  spreadShootRig: {fileID: 5213377594892074264}
   aimingOffset: {x: 0.5, y: 1.7, z: 2}
+  defaultOffset: {x: 0, y: 1.5, z: 0}
 --- !u!114 &5213377595859645955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2060,9 +2123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bda2e8b03acd0748a4f1e0029a8bc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterMovement: {fileID: 5213377595859645965}
   weapon: {fileID: 3564999859357658959}
-  spreadShootRig: {fileID: 5213377594892074264}
   camera: {fileID: 5213377596564747147}
   imageSight: {fileID: 5213377595287966990}
 --- !u!1 &5213377596114876525
@@ -2525,7 +2586,6 @@ MonoBehaviour:
   IsCanStart: 0
   IsCanEnd: 0
   owner: {fileID: 5213377595859645966}
-  moveToActionInteractTransformSpeed: 1
   type: 1
 --- !u!1 &5213377596328283090
 GameObject:
