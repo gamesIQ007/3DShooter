@@ -151,7 +151,7 @@ namespace Shooter3D
         /// <summary>
         /// Действие завершилось
         /// </summary>
-        private void ActionEnded()
+        protected virtual void ActionEnded()
         {
             action.IsCanStart = false;
             action.IsCanEnd = false;

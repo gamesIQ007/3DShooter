@@ -20,5 +20,12 @@ namespace Shooter3D
 
             Destroy(gameObject);
         }
+
+        protected override void ActionEnded()
+        {
+            base.ActionEnded();
+
+            action.IsCanEnd = true;
+        }
     }
 }
