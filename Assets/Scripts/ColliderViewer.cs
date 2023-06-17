@@ -39,7 +39,7 @@ namespace Shooter3D
 
 
 #if UNITY_EDITOR
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.matrix = Matrix4x4.TRS(transform.position + new Vector3(0, viewingHeight, 0), transform.rotation, Vector3.one);
