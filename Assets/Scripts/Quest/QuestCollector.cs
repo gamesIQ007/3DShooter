@@ -40,7 +40,10 @@ namespace Shooter3D
 
         private void OnDestroy()
         {
-            currentQuest.Completed -= OnQuestCompleted;
+            if (currentQuest != null)
+            {
+                currentQuest.Completed -= OnQuestCompleted;
+            }
         }
 
         #endregion

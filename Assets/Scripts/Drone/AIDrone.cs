@@ -11,11 +11,6 @@ namespace Shooter3D
     public class AIDrone : MonoBehaviour
     {
         /// <summary>
-        /// Область перемещения
-        /// </summary>
-        [SerializeField] private CubeArea movementArea;
-
-        /// <summary>
         /// Смотрящий на коллайдеры
         /// </summary>
         [SerializeField] private ColliderViewer colliderViewer;
@@ -24,6 +19,11 @@ namespace Shooter3D
         /// Контролируемый дрон
         /// </summary>
         private Drone drone;
+
+        /// <summary>
+        /// Область перемещения
+        /// </summary>
+        private CubeArea movementArea;
 
         /// <summary>
         /// Позиция, в которую дрон перемещается
@@ -42,10 +42,7 @@ namespace Shooter3D
             drone = GetComponent<Drone>();
             drone.EventOnDeath.AddListener(OnDroneDeath);
 
-            if (movementArea == null)
-            {
-                movementArea = FindObjectOfType<CubeArea>();
-            }
+            FindMovementArea();
 
             drone.OnGetDamage += OnGetDamage;
         }
@@ -175,9 +172,9 @@ namespace Shooter3D
         }
         
         /// <summary>
-         /// Задать цель стрельбы
-         /// </summary>
-         /// <param name="target">Цель</param>
+        /// Задать цель стрельбы
+        /// </summary>
+        /// <param name="target">Цель</param>
         public void SetShootTarget(Transform target)
         {
             shootTarget = target;
@@ -200,6 +197,28 @@ namespace Shooter3D
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Найти область перемещения
+        /// </summary>
+        private void FindMovementArea()
+        {
+            if (movementArea == null)
+            {
+                CubeArea[] cubeAreas = FindObjectsOfType<CubeArea>();
+
+                float minDistance = float.MaxValue;
+
+                for (int i = 0; i < cubeAreas.Length; i++)
+                {
+                    if (Vector3.Distance(transform.position, cubeAreas[i].transform.position) < minDistance)
+                    {
+                        minDistance = Vector3.Distance(transform.position, cubeAreas[i].transform.position);
+                        movementArea = cubeAreas[i];
+                    }
+                }
+            }
         }
     }
 }

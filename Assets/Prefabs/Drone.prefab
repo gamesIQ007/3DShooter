@@ -306,6 +306,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   teamId: 1
+  entityID: 1
   mainMesh: {fileID: 1910471224895307702}
   turrets:
   - {fileID: 1904584696183291424}
@@ -332,7 +333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6362c95becfba44abb7248f25580880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementArea: {fileID: 0}
   colliderViewer: {fileID: 1836036797}
 --- !u!114 &5017906067631826908
 MonoBehaviour:

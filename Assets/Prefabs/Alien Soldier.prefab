@@ -514,7 +514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8087475506206047900}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.348, y: 0, z: -2.756}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -631,8 +631,7 @@ MonoBehaviour:
   aimingDistance: 10
   detectedDistance: 7
   agent: {fileID: 1241908225}
-  patrolPath: {fileID: 0}
-  patrolPathNodeIndex: 3
+  patrolPathNodeIndex: 0
   colliderViewer: {fileID: 1241908228}
   colliderViewerSideView: {fileID: 1937636412351553234}
   sideViewTime: 5
@@ -671,6 +670,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   teamId: 3
+  entityID: 2
   weapon: {fileID: 656596636266320669}
   spreadShootRig: {fileID: 8087475507565866034}
 --- !u!114 &1241908228

@@ -77,11 +77,6 @@ namespace Shooter3D
         [SerializeField] private NavMeshAgent agent;
 
         /// <summary>
-        /// Маршрут патрулирования
-        /// </summary>
-        [SerializeField] private PatrolPath patrolPath;
-
-        /// <summary>
         /// Индекс точки маршрута патрулирования
         /// </summary>
         [SerializeField] private int patrolPathNodeIndex = 0;
@@ -119,6 +114,11 @@ namespace Shooter3D
         /// Текущая точка перемещения
         /// </summary>
         private PatrolPathNode currentPathNode;
+
+        /// <summary>
+        /// Маршрут патрулирования
+        /// </summary>
+        private PatrolPath patrolPath;
 
         /// <summary>
         /// Потенциальная цель
@@ -163,7 +163,7 @@ namespace Shooter3D
 
         private void Start()
         {
-            potencialTarget = Player.Instance.gameObject;
+            FindMovementArea();
 
             characterMovement.UpdatePosition = false;
             navMeshPath = new NavMeshPath();
@@ -312,11 +312,25 @@ namespace Shooter3D
         #region Actions
 
         /// <summary>
+        /// Найти потенциальную цель
+        /// </summary>
+        private void FindPotencialTarget()
+        {
+            potencialTarget = Destructible.FindNearestNonTeamMember(alienSoldier)?.gameObject;
+        }
+
+
+        /// <summary>
         /// Действие обновления цели
         /// </summary>
         private void ActionUpdateTarget()
         {
-            if (potencialTarget == null) return;
+            if (potencialTarget == null) 
+            {
+                FindPotencialTarget();
+
+                if (potencialTarget == null) return;
+            }
 
             if (colliderViewer.IsObjectVisible(potencialTarget) || Vector3.Distance(transform.position, potencialTarget.transform.position) <= detectedDistance)
             {
@@ -531,6 +545,28 @@ namespace Shooter3D
         private void OnDeath()
         {
             SendPlayerStopPursuit();
+        }
+
+        /// <summary>
+        /// Найти маршрут перемещения
+        /// </summary>
+        private void FindMovementArea()
+        {
+            if (patrolPath == null)
+            {
+                PatrolPath[] patrolPaths = FindObjectsOfType<PatrolPath>();
+
+                float minDistance = float.MaxValue;
+
+                for (int i = 0; i < patrolPaths.Length; i++)
+                {
+                    if (Vector3.Distance(transform.position, patrolPaths[i].transform.position) < minDistance)
+                    {
+                        minDistance = Vector3.Distance(transform.position, patrolPaths[i].transform.position);
+                        patrolPath = patrolPaths[i];
+                    }
+                }
+            }
         }
 
 

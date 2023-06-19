@@ -7,7 +7,7 @@ namespace Shooter3D
     /// <summary>
     /// Класс уничтожаемых сущностей
     /// </summary>
-    public class Destructible : Entity
+    public class Destructible : Entity, ISerializableEntity
     {
         /// <summary>
         /// Максимальное количество здоровья
@@ -230,5 +230,57 @@ namespace Shooter3D
             Destroy(gameObject);
             eventOnDeath?.Invoke();
         }
+
+
+        #region Serializable
+
+        /// <summary>
+        /// Класс для состояния объекта
+        /// </summary>
+        [System.Serializable]
+        public class State
+        {
+            /// <summary>
+            /// Расположение
+            /// </summary>
+            public Vector3 Position;
+            /// <summary>
+            /// Здоровье
+            /// </summary>
+            public int HitPoints;
+
+            public State() { }
+        }
+
+        /// <summary>
+        /// ID сущности
+        /// </summary>
+        [SerializeField] private int entityID;
+        public long EntityId => entityID;
+
+        public bool IsSerializable()
+        {
+            return currentHitPoints > 0;
+        }
+
+        public string SerializableState()
+        {
+            State s = new State();
+
+            s.Position = transform.position;
+            s.HitPoints = currentHitPoints;
+
+            return JsonUtility.ToJson(s);
+        }
+
+        public void DeserializeState(string state)
+        {
+            State s = JsonUtility.FromJson<State>(state);
+
+            transform.position = s.Position;
+            currentHitPoints = s.HitPoints;
+        }
+
+        #endregion
     }
 }
