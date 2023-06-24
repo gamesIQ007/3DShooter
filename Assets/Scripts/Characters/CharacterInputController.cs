@@ -41,8 +41,7 @@ namespace Shooter3D
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            LockMouse();
         }
                 
         private void Update()
@@ -107,6 +106,8 @@ namespace Shooter3D
         #endregion
 
 
+        #region Public API
+
         /// <summary>
         /// Назначить камеру
         /// </summary>
@@ -118,5 +119,25 @@ namespace Shooter3D
             targetCamera.SetTargetOffset(defaultOffset);
             targetCamera.SetTarget(targetCharacterMovement.transform);
         }
+
+        /// <summary>
+        /// Заблокировать мышь
+        /// </summary>
+        public void LockMouse()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        /// <summary>
+        /// Разблокировать мышь
+        /// </summary>
+        public void UnlockMouse()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        #endregion
     }
 }

@@ -3,6 +3,21 @@
 namespace Shooter3D
 {
     /// <summary>
+    /// Тип эффекта
+    /// </summary>
+    public enum ImpactType
+    {
+        /// <summary>
+        /// Без дырок
+        /// </summary>
+        NoDecal,
+        /// <summary>
+        /// По умолчанию
+        /// </summary>
+        Default
+    }
+
+    /// <summary>
     /// Импакт эффект
     /// </summary>
     public class ImpactEffect : MonoBehaviour
@@ -11,6 +26,11 @@ namespace Shooter3D
         /// Время жизни
         /// </summary>
         [SerializeField] private float lifeTime;
+
+        /// <summary>
+        /// Дырка от пули
+        /// </summary>
+        [SerializeField] private GameObject decal;
 
         /// <summary>
         /// Таймер
@@ -27,6 +47,19 @@ namespace Shooter3D
             else
             {
                 Destroy(gameObject);
+            }
+        }
+
+
+        /// <summary>
+        /// Обновить тип эффекта
+        /// </summary>
+        /// <param name="type">Тип эффекта</param>
+        public void UpdateType(ImpactType type)
+        {
+            if (type == ImpactType.NoDecal)
+            {
+                decal.SetActive(false);
             }
         }
     }

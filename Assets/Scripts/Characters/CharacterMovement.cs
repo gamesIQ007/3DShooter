@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Shooter3D
 {
@@ -7,6 +8,11 @@ namespace Shooter3D
     /// </summary>
     public class CharacterMovement : MonoBehaviour
     {
+        /// <summary>
+        /// Событие приземления
+        /// </summary>
+        public UnityAction<Vector3> Land;
+
         /// <summary>
         /// Контроллер персонажа
         /// </summary>
@@ -256,6 +262,11 @@ namespace Shooter3D
             if (UpdatePosition)
             {
                 characterController.Move(movementDirection * Time.deltaTime);
+            }
+
+            if (characterController.isGrounded && Mathf.Abs(movementDirection.y) > 2)
+            {
+                Land?.Invoke(movementDirection);
             }
         }
 

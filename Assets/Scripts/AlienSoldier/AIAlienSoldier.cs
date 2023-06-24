@@ -50,6 +50,7 @@ namespace Shooter3D
         /// </summary>
         [SerializeField] private AIBehaviour aIBehaviour;
         public AIBehaviour AI_Behaviour => aIBehaviour;
+        public AIBehaviour Behaviour { get { return aIBehaviour; } set { aIBehaviour = value; } }
 
         /// <summary>
         /// Солдат пришельцев
@@ -205,6 +206,27 @@ namespace Shooter3D
             }
         }
 
+        /// <summary>
+        /// При смерти
+        /// </summary>
+        private void OnDeath()
+        {
+            SendPlayerStopPursuit();
+        }
+
+        /// <summary>
+        /// Когда слышит
+        /// </summary>
+        public void OnHeard()
+        {
+            //StartBehaviour(AIBehaviour.PursuitTarget);
+
+            SendPlayerStartPursuit();
+
+            pursuitTarget = potencialTarget.transform;
+            ActionAssignTargetAllTeamMembers(pursuitTarget);
+        }
+
         #endregion
 
 
@@ -316,7 +338,7 @@ namespace Shooter3D
         /// </summary>
         private void FindPotencialTarget()
         {
-            potencialTarget = Destructible.FindNearestNonTeamMember(alienSoldier)?.gameObject;
+            potencialTarget = Player.Instance.gameObject;
         }
 
 
@@ -463,6 +485,15 @@ namespace Shooter3D
 
 
         /// <summary>
+        /// Задать позицию
+        /// </summary>
+        /// <param name="pos">Позиция</param>
+        public void SetPosition(Vector3 pos)
+        {
+            agent.Warp(pos);
+        }
+
+        /// <summary>
         /// Задать цель преследования
         /// </summary>
         /// <param name="target">Цель</param>
@@ -537,14 +568,6 @@ namespace Shooter3D
                 Player.Instance.StopPursuit();
                 isPlayerDetected = false;
             }
-        }
-
-        /// <summary>
-        /// При смерти
-        /// </summary>
-        private void OnDeath()
-        {
-            SendPlayerStopPursuit();
         }
 
         /// <summary>

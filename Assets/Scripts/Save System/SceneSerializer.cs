@@ -42,11 +42,11 @@ namespace Shooter3D
         {
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                SaveToFile("test.dat");
+                SaveScene();
             }
             if (Input.GetKeyDown(KeyCode.F3))
             {
-                LoadFromFile("test.dat");
+                LoadScene();
             }
         }
 
@@ -54,10 +54,29 @@ namespace Shooter3D
         #region Public API
 
         /// <summary>
+        /// Сохранить
+        /// </summary>
+        public void SaveScene()
+        {
+            SaveToFile("test.dat");
+        }
+
+        /// <summary>
+        /// Загрузить
+        /// </summary>
+        public void LoadScene()
+        {
+            LoadFromFile("test.dat");
+        }
+
+        #endregion
+
+
+        /// <summary>
         /// Сохранить в файл
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
-        public void SaveToFile(string filePath)
+        private void SaveToFile(string filePath)
         {
             List<SceneObjectState> savedObjects = new List<SceneObjectState>();
 
@@ -98,7 +117,7 @@ namespace Shooter3D
         /// Загрузить из файла
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
-        public void LoadFromFile(string filePath)
+        private void LoadFromFile(string filePath)
         {
             Player.Instance.Destroy();
 
@@ -119,6 +138,21 @@ namespace Shooter3D
                 file.Close();
             }
 
+            // Спавним игрока
+            foreach (var v in loadedObjects)
+            {
+                if (prefabDataBase.IsPlayerID(v.EntityID))
+                {
+                    GameObject p = prefabDataBase.CreatePlayer();
+
+                    p.GetComponent<ISerializableEntity>().DeserializeState(v.State);
+
+                    loadedObjects.Remove(v);
+
+                    break;
+                }
+            }
+
             // Спавним объекты
             foreach (var v in loadedObjects)
             {
@@ -129,7 +163,5 @@ namespace Shooter3D
 
             Debug.Log("Загружено из файла " + Application.persistentDataPath + "/" + filePath);
         }
-
-        #endregion
     }
 }

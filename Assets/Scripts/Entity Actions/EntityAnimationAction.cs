@@ -33,6 +33,15 @@ namespace Shooter3D
         private bool isPlayingAnimation;
 
 
+        private void OnDestroy()
+        {
+            if (timer != null)
+            {
+                timer.OnTick -= OnTimerTick;
+            }
+        }
+
+
         #region Public API
 
         public override void StartAction()

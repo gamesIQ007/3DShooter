@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 20
+  decal: {fileID: 2146405401312720595}
 --- !u!82 &-7056759777992045733
 AudioSource:
   m_ObjectHideFlags: 0

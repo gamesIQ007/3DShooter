@@ -21,7 +21,7 @@ namespace Shooter3D
         /// <summary>
         /// Источник звука
         /// </summary>
-        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private NoiseAudioSource audioSource;
 
         /// <summary>
         /// Система частиц вспышка огня

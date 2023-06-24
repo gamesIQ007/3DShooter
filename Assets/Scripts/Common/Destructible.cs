@@ -128,7 +128,16 @@ namespace Shooter3D
         /// </summary>
         public void HealFull()
         {
-            currentHitPoints = hitPoints;
+            currentHitPoints = Mathf.Clamp(hitPoints, 0, hitPoints);
+        }
+
+        /// <summary>
+        /// Задать количество здоровья
+        /// </summary>
+        /// <param name="hitPoint">Количество здоровья</param>
+        public void SetHitPoint(int hitPoint)
+        {
+            currentHitPoints = hitPoint;
         }
 
         /// <summary>
@@ -258,12 +267,12 @@ namespace Shooter3D
         [SerializeField] private int entityID;
         public long EntityId => entityID;
 
-        public bool IsSerializable()
+        public virtual bool IsSerializable()
         {
             return currentHitPoints > 0;
         }
 
-        public string SerializableState()
+        public virtual string SerializableState()
         {
             State s = new State();
 
@@ -273,7 +282,7 @@ namespace Shooter3D
             return JsonUtility.ToJson(s);
         }
 
-        public void DeserializeState(string state)
+        public virtual void DeserializeState(string state)
         {
             State s = JsonUtility.FromJson<State>(state);
 

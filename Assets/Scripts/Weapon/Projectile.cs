@@ -98,6 +98,11 @@ namespace Shooter3D
             {
                 ImpactEffect impact = Instantiate(impactEffectPrefabs[targetMaterial], pos, Quaternion.LookRotation(normal));
                 impact.transform.SetParent(col.transform);
+
+                if (col.GetComponent<Surface>() != null)
+                {
+                    impact.GetComponent<ImpactEffect>().UpdateType(col.GetComponent<Surface>().Type);
+                }
             }
 
             Destroy(gameObject);

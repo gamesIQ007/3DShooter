@@ -10,6 +10,11 @@ namespace Shooter3D
     public class PrefabDataBase : ScriptableObject
     {
         /// <summary>
+        /// Префаб игрока
+        /// </summary>
+        public Entity PlayerPrefab;
+
+        /// <summary>
         /// Список всех префабов
         /// </summary>
         public List<Entity> AllPrefabs;
@@ -33,6 +38,25 @@ namespace Shooter3D
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Является ID игрока
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>Это ID игрока?</returns>
+        public bool IsPlayerID(long id)
+        {
+            return id == (PlayerPrefab as ISerializableEntity).EntityId;
+        }
+
+        /// <summary>
+        /// Создать игрока
+        /// </summary>
+        /// <returns>Созданный объект</returns>
+        public GameObject CreatePlayer()
+        {
+            return Instantiate(PlayerPrefab.gameObject);
         }
     }
 }

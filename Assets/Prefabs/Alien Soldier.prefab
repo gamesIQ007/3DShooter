@@ -673,6 +673,8 @@ MonoBehaviour:
   entityID: 2
   weapon: {fileID: 656596636266320669}
   spreadShootRig: {fileID: 8087475507565866034}
+  aiAlienSoldier: {fileID: 1241908226}
+  hearingDistance: 30
 --- !u!114 &1241908228
 MonoBehaviour:
   m_ObjectHideFlags: 0

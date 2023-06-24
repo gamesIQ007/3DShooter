@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 8728203911130973818}
   - component: {fileID: 8728203911130973819}
   - component: {fileID: 1506548864}
+  - component: {fileID: 5950938820657539095}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -83,7 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: 0
   weaponProperties: {fileID: 11400000, guid: d2be01c71d8508d4995d3ab8e0605961, type: 2}
-  audioSource: {fileID: 1506548864}
+  audioSource: {fileID: 5950938820657539095}
   muzzleParticleSystem: {fileID: 8926286331850134091}
   firePoint: {fileID: 9112033333896274079}
   primaryMaxEnergy: 100
@@ -183,6 +184,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5950938820657539095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8728203911130973817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4aedb3eb290fef49b0fd88bc6ebaf77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8728203911730287393
 GameObject:
   m_ObjectHideFlags: 0
