@@ -221,6 +221,8 @@ namespace Shooter3D
         {
             //StartBehaviour(AIBehaviour.PursuitTarget);
 
+            if (alienSoldier.HitPoints <= 0) return;
+
             SendPlayerStartPursuit();
 
             pursuitTarget = potencialTarget.transform;

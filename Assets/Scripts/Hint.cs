@@ -47,6 +47,12 @@ namespace Shooter3D
         {
             hint.transform.LookAt(lookTransform);
 
+            if (target == null)
+            {
+                lookTransform = Camera.main.transform;
+                target = Player.Instance.transform;
+            }
+
             if (Vector3.Distance(transform.position, target.position) < activeRadius)
             {
                 hint.SetActive(true);
